@@ -138,16 +138,15 @@ body {
     color: #999;
     font-size: 14px;
     font-weight: 300;
-    opacity: 0;
-    transition: opacity 0.3s ease;
     z-index: 100;
     background: rgba(255, 255, 255, 0.8);
     padding: 5px 10px;
     border-radius: 4px;
+    transition: background-color 0.2s ease;
 }
 
-#current-file-indicator.visible {
-    opacity: 1;
+#current-file-indicator:hover {
+    background-color: #f5f5f5;
 }
 
 #file-path {
@@ -164,6 +163,8 @@ body {
     border: 1px solid #ddd;
     background: white;
     outline: none;
+    padding: 2px 4px;
+    min-width: 100px;
 }
 
 /* Sidebar styles - togglable on right side */

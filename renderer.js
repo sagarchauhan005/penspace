@@ -65,12 +65,6 @@ function autoSaveContent() {
         // Show the filename in the top-left
         filePath.textContent = autoSaveFilename;
         filePath.classList.add('editable');
-
-        // Make the indicator visible
-        currentFileIndicator.classList.add('visible');
-        setTimeout(() => {
-            currentFileIndicator.classList.remove('visible');
-        }, 2000);
     }
 
     // Send content to be saved
@@ -224,7 +218,7 @@ function toggleDistractionFree() {
 
     // Update button text based on current state
     if (fullscreenBtn) {
-        fullscreenBtn.textContent = isDistractFreeMode ? "Normal" : "Distraction Free";
+        fullscreenBtn.textContent = isDistractFreeMode ? "Normal Mode" : "Focus Mode";
     }
 
     // Send to main process to toggle fullscreen
@@ -311,9 +305,6 @@ ipcRenderer.on('file-opened', (event, content, fullPath) => {
     editor.focus();
     editor.classList.add('typing');
 
-    // Show file indicator
-    showCurrentFileIndicator();
-
     // Update active file in the sidebar
     updateActiveFileInTree(fullPath);
 });
@@ -328,7 +319,6 @@ ipcRenderer.on('file-saved', (event, savedPath) => {
     currentOpenFile = savedPath;
     filePath.textContent = path.basename(savedPath);
     filePath.classList.add('editable');
-    showCurrentFileIndicator();
 });
 
 // Listen for auto-save completion
@@ -336,7 +326,7 @@ ipcRenderer.on('auto-save-complete', (event, filePath) => {
     console.log('Auto-save complete:', filePath);
     currentOpenFile = filePath;
 
-    // Update the filename in UI if it's not already set
+    // Update the filename in UI
     if (this.filePath) {
         this.filePath.textContent = path.basename(filePath);
         this.filePath.classList.add('editable');
