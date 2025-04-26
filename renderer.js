@@ -41,14 +41,14 @@ let currentPlaceholder = 0;
 
 // Cycle through placeholders every few seconds
 function cyclePlaceholders() {
-    if (!editor.value.trim()) { // Only change if editor is empty
+    if (!editor.innerText.trim()) { // Only change if editor is empty
         currentPlaceholder = (currentPlaceholder + 1) % placeholders.length;
-        editor.setAttribute('placeholder', placeholders[currentPlaceholder]);
+        editor.setAttribute('data-placeholder', placeholders[currentPlaceholder]);
     }
 }
 
 // Start cycling placeholders
-const placeholderInterval = setInterval(cyclePlaceholders, 3000);
+const placeholderInterval = setInterval(cyclePlaceholders, 2000);
 
 // Auto-save content function
 function autoSaveContent() {
@@ -57,8 +57,12 @@ function autoSaveContent() {
     // If no file is open yet, create a new one with timestamp
     if (!currentOpenFile) {
         const now = new Date();
-        const timestamp = now.toISOString().replace(/[:.]/g, '-');
-        autoSaveFilename = `untitled-${timestamp}.txt`;
+        const date = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const uniqueId = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+        const content = editor.innerText.trim();
+        let baseName = 'Pen';
+
+        autoSaveFilename = `${baseName} - ${date} ${uniqueId}.txt`;
 
         console.log('Creating new auto-save file:', autoSaveFilename);
 
@@ -68,12 +72,12 @@ function autoSaveContent() {
     }
 
     // Send content to be saved
-    ipcRenderer.send('auto-save-content', currentOpenFile || autoSaveFilename, editor.value);
+    ipcRenderer.send('auto-save-content', currentOpenFile || autoSaveFilename, editor.innerText.trim());
 }
 
 // Update word and character counts
 function updateCounts() {
-    const text = editor.value;
+    const text = editor.innerText.trim();
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     const chars = text.length;
 
@@ -86,7 +90,7 @@ function updateCounts() {
         // FIXED: Call autosave if there's content but no current file
         if (text.trim().length > 0) {
             if (currentOpenFile) {
-                ipcRenderer.send('save-content', editor.value);
+                ipcRenderer.send('save-content', editor.innerText.trim());
             } else {
                 autoSaveContent();
             }
@@ -105,9 +109,9 @@ function showCurrentFileIndicator() {
 // Handle the typing state to move text to top left and trigger autosave
 editor.addEventListener('input', function() {
     // Check if this is the first input and no file is open
-    const isFirstInput = !editor.classList.contains('typing') && editor.value.trim().length > 0;
+    const isFirstInput = !editor.classList.contains('typing') && editor.innerText.trim().length > 0;
 
-    if (editor.value.trim().length > 0) {
+    if (editor.innerText.trim().length > 0) {
         editor.classList.add('typing');
 
         // If this is the first input and no file exists yet, create one immediately
@@ -147,7 +151,7 @@ if (closeSidebarBtn) {
 // Create new file function
 function newFile() {
     console.log('Creating new file');
-    if (editor.value.trim() !== '') {
+    if (editor.innerText.trim() !== '') {
         // Ask to save current file if there's content
         const shouldSave = confirm('Do you want to save the current file?');
         if (shouldSave) {
@@ -155,7 +159,7 @@ function newFile() {
         }
     }
 
-    editor.value = '';
+    editor.innerText = '';
     currentOpenFile = null;
     autoSaveFilename = '';
     filePath.textContent = 'Untitled';
@@ -197,7 +201,7 @@ if (saveDialogSaveBtn) {
         const filename = saveFilenameInput.value.trim();
         if (filename) {
             // Send filename to main process to save
-            ipcRenderer.send('save-file-with-name', filename, editor.value);
+            ipcRenderer.send('save-file-with-name', filename, editor.innerText.trim());
             saveDialogOverlay.classList.remove('visible');
         }
     });
@@ -297,7 +301,7 @@ ipcRenderer.on('new-file', () => {
 
 // Listen for file opened
 ipcRenderer.on('file-opened', (event, content, fullPath) => {
-    editor.value = content;
+    editor.innerText = content;
     currentOpenFile = fullPath;
     filePath.textContent = fullPath ? path.basename(fullPath) : 'Untitled';
     filePath.classList.add('editable');
@@ -311,7 +315,7 @@ ipcRenderer.on('file-opened', (event, content, fullPath) => {
 
 // Listen for save request
 ipcRenderer.on('save-requested', () => {
-    ipcRenderer.send('save-content', editor.value);
+    ipcRenderer.send('save-content', editor.innerText.trim());
 });
 
 // File saved confirmation
@@ -356,7 +360,7 @@ ipcRenderer.on('file-deleted', () => {
     filePath.textContent = 'Untitled';
 
     // Create a new autosave file if there's content
-    if (editor.value.trim().length > 0) {
+    if (editor.innerText.trim().length > 0) {
         autoSaveContent();
     }
 });
@@ -761,7 +765,7 @@ function updateFullscreenIcon() {
             fullscreenBtn.title = "Normal Mode";
         } else {
             fullscreenBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>`;
-            fullscreenBtn.title = "Distraction Free Mode";
+            fullscreenBtn.title = "Focus Mode";
         }
     }
 }

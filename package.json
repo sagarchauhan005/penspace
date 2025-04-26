@@ -1,13 +1,15 @@
 {
-  "name": "freewrite-linux",
+  "name": "penscpace-minimal",
   "version": "1.0.0",
-  "description": "A simple, distraction-free writing app for Linux",
+  "description": "A simple, distraction-free writing app",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder --linux"
+    "build-linux": "electron-builder --linux",
+    "build-mac": "electron-builder --mac",
+    "build-win": "electron-builder --win"
   },
-  "author": "",
+  "author": "Sagar Chauhan",
   "license": "MIT",
   "devDependencies": {
     "electron": "^25.0.0",
