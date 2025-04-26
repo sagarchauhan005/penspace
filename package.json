@@ -1,0 +1,31 @@
+{
+  "name": "freewrite-linux",
+  "version": "1.0.0",
+  "description": "A simple, distraction-free writing app for Linux",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --linux"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^25.0.0",
+    "electron-builder": "^24.6.3"
+  },
+  "dependencies": {
+    "chokidar": "^3.6.0"
+  },
+  "build": {
+    "appId": "com.freewrite.linux",
+    "productName": "Freewrite",
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "category": "Utility"
+    }
+  }
+}
