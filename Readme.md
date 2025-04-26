@@ -1,14 +1,9 @@
-**_`# Penspace
+# Penspace
 
 A simple, distraction-free writing application for focused writing sessions.
 
 ## See it in action
-![Penspace Screenshot](assets/screenshots/penspace.gif)
-
-![Penspace Screenshot](assets/screenshots/white.png)
-![Penspace Screenshot](assets/screenshots/black.png)
-![Penspace Screenshot](assets/screenshots/pink.png)
-![Penspace Screenshot](assets/screenshots/yellow.png)
+![penspace](https://github.com/user-attachments/assets/b299ca04-cb2e-459d-9f3a-5870b8c78f0c)
 
 ## Features
 
