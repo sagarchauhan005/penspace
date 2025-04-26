@@ -723,3 +723,57 @@ window.addEventListener('load', function() {
         applyTheme(savedTheme);
     }
 });
+
+// Footer behavior management
+const appContainer = document.getElementById('app-container');
+let footerUsed = false;
+
+// Hide footer after it's been used
+function manageFooterVisibility() {
+    const footerMenu = document.getElementById('footer-menu');
+
+    // Listen for any button click in the footer
+    footerMenu.addEventListener('click', () => {
+        // Mark that the footer has been used
+        footerUsed = true;
+
+        // Add class to keep footer hidden until hover
+        appContainer.classList.add('footer-always-hidden');
+
+        // Save this preference
+        localStorage.setItem('penspace-footer-hidden', 'true');
+    });
+
+    // Load saved preference
+    if (localStorage.getItem('penspace-footer-hidden') === 'true') {
+        appContainer.classList.add('footer-always-hidden');
+    }
+}
+
+// Initialize footer behavior
+manageFooterVisibility();
+
+// Update fullscreen button icon based on state
+function updateFullscreenIcon() {
+    if (fullscreenBtn) {
+        if (isDistractFreeMode) {
+            fullscreenBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v3a2 2 0 0 1-2 2H3m18 0h-3a2 2 0 0 1-2-2V3m0 18v-3a2 2 0 0 1 2-2h3M3 16h3a2 2 0 0 1 2 2v3"></path></svg>`;
+            fullscreenBtn.title = "Normal Mode";
+        } else {
+            fullscreenBtn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>`;
+            fullscreenBtn.title = "Distraction Free Mode";
+        }
+    }
+}
+
+// Update the toggle distraction-free mode function
+function toggleDistractionFree() {
+    isDistractFreeMode = !isDistractFreeMode;
+    console.log('Toggling distraction-free mode:', isDistractFreeMode);
+
+    // Update button icon based on current state
+    updateFullscreenIcon();
+
+    // Send to main process to toggle fullscreen
+    ipcRenderer.send('toggle-fullscreen');
+}
