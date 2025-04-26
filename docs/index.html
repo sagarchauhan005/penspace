@@ -1,0 +1,1188 @@
+
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="Penspace is a clean, minimalist writing application designed for focused writing sessions with auto-saving, multiple themes, and essential formatting tools.">
+    <meta name="theme-color" content="#ffffff">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="">
+
+    <!-- Alpine.js - Load first -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.3/cdn.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: "DM Sans", sans-serif !important;
+        }
+
+        body, div, p {
+            font-family: "Inter", sans-serif !important;
+        }
+    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <title>Penspace - Distraction-Free Writing Application</title>
+    <!-- SEO Description -->
+    <meta name="description" content="Penspace is a clean, minimalist writing application designed for focused writing sessions with auto-saving, multiple themes, and essential formatting tools.">
+
+    <!-- Performance optimization: Preload critical resources -->
+    <link rel="preload" href="https://cdn.tailwindcss.com" as="script">
+
+    <!-- Header Scripts -->
+    <script id="header-scripts">
+        // This script tag will be replaced with actual scripts.head content
+        if (window.scripts && window.scripts.head) {
+            document.getElementById('header-scripts').outerHTML = window.scripts.head;
+        }
+    </script>
+
+    <!-- Core CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // render the settings object
+        //console.log('settings', [object Object]);
+        document.addEventListener('DOMContentLoaded', function() {
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: {
+                                DEFAULT: '#3B82F6',
+                                50: '#f8f8f8',
+                                100: '#e8e8e8',
+                                200: '#d3d3d3',
+                                300: '#a3a3a3',
+                                400: '#737373',
+                                500: '#525252',
+                                600: '#404040',
+                                700: '#262626',
+                                800: '#171717',
+                                900: '#0a0a0a',
+                                950: '#030303',
+                            },
+                            secondary: {
+                                DEFAULT: '#1E293B',
+                                50: '#f8f8f8',
+                                100: '#e8e8e8',
+                                200: '#d3d3d3',
+                                300: '#a3a3a3',
+                                400: '#737373',
+                                500: '#525252',
+                                600: '#404040',
+                                700: '#262626',
+                                800: '#171717',
+                                900: '#0a0a0a',
+                                950: '#030303',
+                            },
+                            accent: {
+                                DEFAULT: '',
+                                50: '#f8f8f8',
+                                100: '#e8e8e8',
+                                200: '#d3d3d3',
+                                300: '#a3a3a3',
+                                400: '#737373',
+                                500: '#525252',
+                                600: '#404040',
+                                700: '#262626',
+                                800: '#171717',
+                                900: '#0a0a0a',
+                                950: '#030303',
+                            },
+                        },
+                        fontFamily: {
+                            sans: ['DM Sans', 'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
+                            heading: ['Inter', 'Inter', 'system-ui', 'sans-serif'],
+                            body: ['Inter', 'Inter', 'system-ui', 'sans-serif'],
+                        },
+                        spacing: {
+                            '18': '4.5rem',
+                            '22': '5.5rem',
+                            '30': '7.5rem',
+                        },
+                        maxWidth: {
+                            '8xl': '88rem',
+                            '9xl': '96rem',
+                        },
+                        aspectRatio: {
+                            'portrait': '3/4',
+                            'landscape': '4/3',
+                            'ultrawide': '21/9',
+                        },
+                    },
+                },
+                variants: {
+                    extend: {
+                        opacity: ['disabled'],
+                        cursor: ['disabled'],
+                        backgroundColor: ['active', 'disabled'],
+                        textColor: ['active', 'disabled'],
+                    },
+                },
+            }
+        });
+    </script>
+
+    <!-- Utilities and Components -->
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.45.1/apexcharts.min.js"></script>
+
+    <!-- Optimized Font Loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Dynamic Meta Tags -->
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="robots" content="">
+    <meta name="google-site-verification" content="">
+    <meta name="baidu-verification" content="">
+    <meta name="yandex-verification" content="">
+    <meta name="bing-verification" content="">
+    <meta property="og:title" content="">
+    <meta property="og:description" content="">
+    <meta property="og:image" content="">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Penspace">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="">
+    <meta name="twitter:description" content="">
+    <meta name="twitter:image" content="">
+
+
+    <!-- Font Links -->
+
+    <link rel="icon" type="image/x-icon" href="">
+
+    <!-- FAQ Accordion Styles -->
+    <style>
+        h1, h2, h3, h4, h5, h6 {
+            font-family: DM Sans, Inter, system-ui, sans-serif;
+        }
+        body {
+            font-family: Inter, Inter, system-ui, sans-serif;
+        }
+
+        /* FAQ Accordion Styling */
+        .faq-item {
+            margin-bottom: 0.75rem;
+        }
+        .faq-item button {
+            width: 100%;
+            text-align: left;
+            border: none;
+            outline: none;
+        }
+        .faq-item button:focus {
+            outline: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .faq-item button[aria-expanded="true"] {
+            border-radius: 0.75rem 0.75rem 0 0;
+        }
+        .faq-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .faq-content.active {
+            max-height: 1000px;
+        }
+        .faq-toggle-icon {
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        [aria-expanded="true"] .faq-toggle-icon {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="antialiased text-gray-800 min-h-screen flex flex-col">
+<!-- Skip to main content link for accessibility -->
+<a href="#main-content"
+   class="sr-only focus:not-sr-only focus:absolute focus:top-0 focus:left-0 focus:z-50 focus:p-4 focus:bg-white focus:text-black">
+    Skip to main content
+</a>
+
+<!-- Main content area -->
+<main id="main-content" class="flex-1 relative h-full">
+    <div id="RolloutPageContent"><element id="d0fd17de-a96a-4920-be23-35201c96b098" data-section-id="d0fd17de-a96a-4920-be23-35201c96b098">
+
+        <div id="root">
+            <header id="header" class="bg-neutral-100 relative z-10">
+                <nav class="container mx-auto px-6 py-4">
+                    <div class="flex items-center justify-between">
+                        <!-- Logo -->
+                        <div class="flex items-center">
+                            <a href="#" class="text-2xl font-bold text-neutral-800">Penspace</a>
+                        </div>
+
+                        <!-- Desktop Navigation -->
+                        <div class="hidden md:flex space-x-6">
+                            <a href="#" class="font-DM Sans text-neutral-700 hover:text-neutral-900 transition-colors duration-300">Home</a>
+                            <a href="#features" class="font-DM Sans text-neutral-700 hover:text-neutral-900 transition-colors duration-300">Features</a>
+                            <a href="#download" class="font-DM Sans text-neutral-700 hover:text-neutral-900 transition-colors duration-300">Download</a>
+                        </div>
+
+                        <!-- Download Button (Desktop) -->
+                        <div class="hidden md:block">
+                            <a href="#download" class="bg-neutral-800 text-white px-5 py-2 rounded-lg hover:bg-neutral-700 transition-colors duration-300">Download</a>
+                        </div>
+
+                        <!-- Mobile Menu Button -->
+                        <button id="mobile-menu-button" class="md:hidden text-neutral-800 focus:outline-none" aria-label="Toggle menu">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Mobile Navigation -->
+                    <div id="mobile-menu" class="md:hidden hidden mt-4 pb-2">
+                        <div class="flex flex-col space-y-3">
+                            <a href="#" class="font-DM Sans text-neutral-700 hover:text-neutral-900 transition-colors duration-300">Home</a>
+                            <a href="#features" class="font-DM Sans text-neutral-700 hover:text-neutral-900 transition-colors duration-300">Features</a>
+                            <a href="#download" class="font-DM Sans text-neutral-700 hover:text-neutral-900 transition-colors duration-300">Download</a>
+                            <a href="#download" class="bg-neutral-800 text-white px-5 py-2 rounded-lg hover:bg-neutral-700 transition-colors duration-300 text-center mt-2">Download</a>
+                        </div>
+                    </div>
+                </nav>
+
+                <script>
+                    // Mobile menu toggle functionality
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const mobileMenuButton = document.getElementById('mobile-menu-button');
+                        const mobileMenu = document.getElementById('mobile-menu');
+
+                        mobileMenuButton.addEventListener('click', function() {
+                            mobileMenu.classList.toggle('hidden');
+
+                            // Change hamburger to X when menu is open
+                            const isOpen = !mobileMenu.classList.contains('hidden');
+                            if (isOpen) {
+                                mobileMenuButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>`;
+                            } else {
+                                mobileMenuButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>`;
+                            }
+                        });
+
+                        // Close mobile menu when clicking on navigation links
+                        const mobileNavLinks = mobileMenu.querySelectorAll('a');
+                        mobileNavLinks.forEach(link => {
+                            link.addEventListener('click', function() {
+                                mobileMenu.classList.add('hidden');
+                                mobileMenuButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>`;
+                            });
+                        });
+                    });
+                </script>
+            </header>
+        </div>
+
+    </element><element id="14c0f9a8-b47c-4c47-8ad5-12153ef8da3e" data-section-id="14c0f9a8-b47c-4c47-8ad5-12153ef8da3e">
+
+        <div id="root">
+            <section id="hero" class="bg-neutral-900 text-white py-16 md:py-24 relative overflow-hidden min-h-screen flex items-center">
+                <div class="container mx-auto px-6 relative z-10">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                        <div class="space-y-6">
+                            <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
+                                Write freely,<br>
+                                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">focus deeply.</span>
+                            </h1>
+
+                            <p class="text-lg md:text-xl text-neutral-300 max-w-lg">
+                                A distraction-free writing environment that helps you concentrate on what matters most—your words.
+                            </p>
+
+                            <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4">
+                                <button id="download-button" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-all transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                                    Download Now
+                                </button>
+                                <button id="learn-more-button" class="bg-transparent hover:bg-neutral-800 text-white font-semibold py-3 px-6 border border-neutral-700 rounded-lg transition-all hover:border-neutral-600 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:ring-opacity-50">
+                                    Learn More
+                                </button>
+                            </div>
+
+                            <div class="pt-6 text-neutral-400 text-sm flex items-center space-x-4">
+
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span>Linux (Available)</span>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span>Windows (Coming Soon)</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span>macOS (Coming Soon)</span>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="relative">
+                            <div class="bg-neutral-800 rounded-xl p-4 border border-neutral-700 shadow-lg transform hover:translate-y-[-5px] transition-all duration-300">
+                                <div class="bg-neutral-900 rounded-lg p-4 border border-neutral-700 overflow-hidden">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex space-x-2">
+                                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                        </div>
+                                        <div class="text-xs text-neutral-500">Penspace</div>
+                                    </div>
+                                    <div class="typing-animation">
+                                        <p class="text-neutral-300 pb-2">The blank page is not your enemy.</p>
+                                        <p class="text-neutral-300 pb-2">It's a canvas for your ideas.</p>
+                                        <p class="text-neutral-300 pb-2">A space for your thoughts to take shape.</p>
+                                        <p class="text-neutral-300 cursor-animation">|</p>
+                                    </div>
+                                    <div class="flex items-center justify-between mt-4 text-xs text-neutral-500">
+                                        <div>Words: 21</div>
+                                        <div>Auto-saved 15s ago</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="absolute -bottom-4 -right-4 bg-neutral-800 rounded-lg p-3 border border-neutral-700 shadow-lg transform rotate-6 z-0 hidden md:block">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-4 h-4 rounded-full bg-blue-500"></div>
+                                    <div class="text-xs text-neutral-400">Dark Theme</div>
+                                </div>
+                            </div>
+
+                            <div class="absolute -top-4 -left-4 bg-neutral-800 rounded-lg p-3 border border-neutral-700 shadow-lg transform -rotate-6 z-0 hidden md:block">
+                                <div class="flex items-center space-x-2">
+                                    <div class="w-4 h-4 rounded-full bg-green-500"></div>
+                                    <div class="text-xs text-neutral-400">Focus Mode</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="absolute bottom-0 left-0 w-full h-64 bg-gradient-to-t from-neutral-900 to-transparent"></div>
+
+                <!-- Modal for download options -->
+                <div id="download-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden" aria-modal="true" aria-hidden="true">
+                    <div class="bg-neutral-800 rounded-xl p-6 max-w-md w-full mx-4 shadow-xl" role="dialog" aria-labelledby="download-modal-title">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 id="download-modal-title" class="text-xl font-bold text-white">Download Penspace</h3>
+                            <button id="close-modal-button" class="text-neutral-400 hover:text-white focus:outline-none" aria-label="Close">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="space-y-4">
+                            <a href="#windows" class="flex items-center p-4 bg-neutral-700 hover:bg-neutral-600 rounded-lg transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-blue-400" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+                                </svg>
+                                <div>
+                                    <div class="font-semibold">Windows (Coming Soon)</div>
+                                    <div class="text-xs text-neutral-400">Windows 10/11 (64-bit)</div>
+                                </div>
+                            </a>
+
+                            <a href="#macos" class="flex items-center p-4 bg-neutral-700 hover:bg-neutral-600 rounded-lg transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-neutral-300" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M22 17.607c-.786 2.28-3.139 6.317-5.563 6.361-1.608.031-2.125-.953-3.963-.953-1.837 0-2.412.923-3.932.983-2.572.099-6.542-5.827-6.542-10.995 0-4.747 3.308-7.1 6.198-7.143 1.55-.028 3.014 1.045 3.959 1.045.949 0 2.727-1.29 4.596-1.101.782.033 2.979.315 4.389 2.377-3.741 2.442-3.158 7.549.858 9.426zm-5.222-17.607c-2.826.114-5.132 3.079-4.81 5.531 2.612.203 5.118-2.725 4.81-5.531z" />
+                                </svg>
+                                <div>
+                                    <div class="font-semibold">macOS (Coming Soon)</div>
+                                    <div class="text-xs text-neutral-400">macOS 11 or later</div>
+                                </div>
+                            </a>
+
+                            <a href="#linux" class="flex items-center p-4 bg-neutral-700 hover:bg-neutral-600 rounded-lg transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 mr-3 text-yellow-400" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.581 19.049c-.55-.446-.336-1.431-.907-1.917.553-3.365-.997-6.331-2.845-8.232-1.551-1.595-1.051-3.147-1.051-4.49 0-2.146-.881-4.41-3.55-4.41-2.853 0-3.635 2.38-3.663 3.738-.068 3.262.659 4.11-1.25 6.484-2.246 2.793-2.577 5.579-2.07 7.057-.237.276-.557.582-1.155.835-1.652.686-.441 2.857 1.261 2.483.506-.111 1.048-.408 1.393-.908.564.041 1.198-.027 1.908-.146.774.394 1.665.637 2.746.637 1.172 0 2.267-.303 3.082-.78 1.469.297 2.481.147 3.363.096.46.516 1.033.84 1.58.967 1.7.394 3.062-1.725 1.158-2.414zm-10.936-15.482c-.089-.013-.168-.043-.25-.043-1.562 0-1.53 1.923-1.35 3.629-.575.091-1.195.244-1.965.477.642-2.559 1.97-4.026 3.565-4.063zm.024 10.215c-1.698.346-3.272.941-4.55 1.631-.508-1.094-.438-2.223.127-3.284.691.097 1.444.154 2.231.154.656 0 1.298-.042 1.902-.117.159.764.452 1.156.29 1.616zm6.752-5.331c-.666-.36-1.375-.653-2.098-.854.021-.384.043-.715.069-.994.028.126.059.271.102.422.22.787.951 1.587.817 3.113-.042.479-.303.861-.666 1.109-.402-.623-1.345-1.111-2.301-1.111-1.928 0-3.475 1.984-3.475 4.137 0 .289.051.568.132.838-.445-.016-.876-.059-1.29-.123l-.088.158c-.553.99-1.691 1.895-2.642 1.986-.677.055-1.266-.389-1.337-1.059-.046-.438.071-.885.405-1.281.255-.305.608-.522 1.057-.653-.188.926.066 1.346.459 1.382.38.033.908-.598.908-1.135 0-2.074-1.593-3.764-1.593-5.709 0-1.445.424-2.703 1.207-3.501.841-.857 1.976-1.227 2.874-1.227.437 0 .793.058 1.045.139.389.094.702.213.93.361.169.104.369.249.504.41.142.159.27.356.364.593.126.317.184.646.19.979.023 1.431-.728 2.143-.929 2.353-.219.227-.574.413-.88.516-.492.17-.891.15-.891.15.061.025.15.051.23.093.256.142.997.472 1.841.284.741-.166 1.398-.798 1.623-1.544.066-.222.11-.458.121-.717.021-.472-.026-1.204-.122-1.838.358.206.733.41 1.051.671.662.549 1.249 1.335 1.623 2.261.374.923.538 2.029.38 3.125-.147 1.025-.549 1.916-1.122 2.651-1.55-1.407-1.235-2.961-3.172-2.961-.55 0-1.063.14-1.498.379.046-.285.086-.54.118-.771l.197-.016c1.434-.111 2.701-.512 3.636-1.073.829-.495 1.516-1.193 1.959-2.031.185.425.498.698.864.888.468.24 1.013.267 1.641.069.803-.25 1.548-.653 2.143-1.167.554-.477.893-1.018.931-1.592.013-.178-.021-.356-.118-.529.025-.15.046-.3.068-.451zm-7.302 7.568c.04-.092.09-.186.155-.266l-.003-.02c.014-.026.029-.055.044-.084.05-.086.109-.16.179-.221.418-.348 1.161-.312 1.707.139.113.094.207.203.287.32.094.145.152.311.152.485 0 .302-.155.589-.42.762-.267.177-.653.197-.989.05-.113-.051-.21-.127-.295-.215l-.011.008c-.344.264-.741.428-1.163.428-.191 0-.379-.033-.563-.098-.097.27-.314.469-.594.469-.336 0-.612-.291-.612-.642 0-.159.061-.312.155-.426-.172-.288-.288-.619-.288-.975 0-.549.243-1.045.638-1.399-.096-.195-.152-.404-.152-.618 0-.315.109-.599.284-.826-.01-.62.035-.122.09-.177h.002c.125-.125.301-.163.47-.108.172.057.286.177.302.338l.004.05c.058.315.274.579.549.699-.219.334-.344.714-.344 1.109 0 .52.198.99.526 1.351.048-.637.62-1.153 1.333-1.153.515 0 .941.258 1.141.659.222-.353.47-.693.742-1.013-.427-.172-.73-.557-.73-.996 0-.604.515-1.099 1.142-1.099.628 0 1.143.495 1.143 1.099 0 .501-.355.924-.827 1.044.248.32.469.661.642 1.014.204-.344.584-.54 1.017-.54.639 0 1.161.433 1.28.992.265-.184.431-.485.431-.815 0-.55-.447-.999-1.001-.999-.214 0-.413.065-.579.176-.2-.212-.476-.343-.781-.343-.374 0-.706.169-.931.429-.301-.227-.671-.361-1.073-.361-.306 0-.588.08-.839.214-.447-1.009-1.35-1.842-2.776-1.842-.643 0-1.248.149-1.744.403.026-.133.04-.267.04-.4 0-.373-.092-.72-.254-1.043.344-.182.67-.38.97-.593.277-.196.517-.4.725-.607.183-.178.338-.363.446-.545.108-.178.175-.352.175-.516 0-.246-.132-.484-.345-.632-.214-.15-.498-.195-.775-.128-.277.066-.55.217-.687.409-.069.092-.105.194-.106.295-.114-.001-.23-.017-.344-.049-.427-.125-.742-.462-.844-.846-.105-.42.051-.822.323-1.077.232-.219.557-.353.979-.451.424-.098.904-.132 1.342-.122.439.011.846.066 1.09.186.242.119.363.289.334.528-.291.187-.519.474-.664.805-.148.348-.221.741-.221 1.155 0 .244.028.488.087.731-.021.025-.038.052-.059.078-.239.322-.502.635-.827.911-.257.221-.547.422-.867.597-.313.17-.632.292-.977.353-.346.064-.717.063-1.099-.007zm2.196.48c.218.056.444.086.675.086.253 0 .495-.039.723-.108-.326.368-.822.608-1.398.608-.496 0-.954-.181-1.292-.476.259.05.541.077.836.077.161 0 .319-.01.456-.031zm5.07-.074c.051.131.136.252.249.345.113.096.258.165.418.195.159.031.329.026.494-.015.165-.041.319-.117.446-.221.126-.104.223-.237.282-.391.059-.153.079-.325.052-.505-.027-.179-.104-.35-.225-.493-.124-.146-.288-.258-.474-.328-.186-.069-.394-.092-.594-.056-.098.018-.19.045-.279.08.01-.08.04-.144.09-.194.195-.195.479-.228.84-.131.059-.085.09-.193.09-.303-.05-.1-.03-.209-.03-.209.073.005.132.05.197.125.065.076.116.183.116.301 0 .161-.085.312-.219.403.046.145.145.209.233.252.088.043.167.059.236.068.069.01.128.013.168.032.142.067.17.181.17.358-.043-.02-.079-.054-.129-.071-.049-.018-.11-.031-.18-.035-.69-.005-.146.001-.228.013-.082.013-.167.032-.251.065-.085.032-.168.077-.243.137-.075.06-.141.134-.19.226-.048.092-.08.199-.09.326-.011.125.001.266.056.417-.01.003-.022.004-.034.004-.05 0-.097-.022-.132-.067-.035-.044-.06-.106-.06-.179 0-.058.02-.117.056-.16.047-.057.118-.081.196-.081.086 0 .175.03.25.082.018-.095.03-.194.031-.296.002-.242-.089-.493-.28-.659-.193-.166-.471-.238-.741-.196-.261.081-.467.246-.481.481-.004.061.006.12.026.176.02.058.045.106.07.151-.16.012-.32.029-.48.051-.87.12-.171.301-.171.532 0 .306.124.592.325.829zm-4.202.284c.113.007.236-.013.349-.067.115-.055.222-.15.252-.295.031-.151.027-.271-.023-.376-.048-.106-.132-.194-.247-.257-.116-.064-.259-.102-.402-.102-.144 0-.289.035-.415.098l-.011.007c-.021-.081-.058-.155-.108-.22.221-.16.493-.255.791-.255.695 0 1.261.52 1.261 1.159 0 .292-.1.56-.271.773.031.068.059.139.084.21.024.07.033.143.033.215 0 .291-.221.539-.52.573v-.013c-.053.021-.107.033-.161.033-.073 0-.145-.019-.21-.054-.064-.035-.12-.085-.162-.147-.036-.052-.061-.109-.079-.17-.016-.062-.024-.127-.024-.194 0-.148.044-.291.128-.417-.219.103-.462.161-.728.161-.066 0-.132-.003-.197-.011zm1.502.365zm.09-.003c.001.019.01.035.025.048.015.014.036.023.058.025h.017c.019 0 .037-.006.053-.017.016-.012.027-.029.031-.05.006-.027.012-.052.021-.074.01-.022.022-.042.037-.058.015-.017.033-.03.054-.039s.042-.014.064-.014c.011 0 .023.001.033.004.011.003.021.006.031.012.01.005.021.011.032.018-.081-.009-.166.015-.206.09-.055.104.022.144.022.245 0 .07-.039.129-.095.167-.057.037-.133.057-.219.057-.067 0-.133-.015-.191-.043-.058-.028-.108-.068-.14-.119-.031-.052-.043-.112-.028-.173.016-.061.059-.113.122-.147.047-.025.099-.041.156-.047.032-.004.065-.005.098-.004.026.001.031.001.047.001l.023-.001c-.023.033-.028.066-.024.099z" />
+                                </svg>
+                                <div>
+                                    <div class="font-semibold">Linux</div>
+                                    <div class="text-xs text-neutral-400">AppImage, Debian, RPM</div>
+                                </div>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <script>
+                // Typing animation effect
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Download modal functionality
+                    const downloadButton = document.getElementById('download-button');
+                    const downloadModal = document.getElementById('download-modal');
+                    const closeModalButton = document.getElementById('close-modal-button');
+                    const modalDialog = downloadModal.querySelector('[role="dialog"]');
+                    let lastFocusedElement = null;
+
+                    // Function to open modal
+                    function openModal() {
+                        lastFocusedElement = document.activeElement;
+                        downloadModal.classList.remove('hidden');
+                        document.body.style.overflow = 'hidden';
+                        downloadModal.setAttribute('aria-hidden', 'false');
+
+                        // Focus the first focusable element
+                        setTimeout(() => {
+                            const closeButton = downloadModal.querySelector('#close-modal-button');
+                            closeButton.focus();
+                        }, 100);
+                    }
+
+                    // Function to close modal
+                    function closeModal() {
+                        downloadModal.classList.add('hidden');
+                        document.body.style.overflow = '';
+                        downloadModal.setAttribute('aria-hidden', 'true');
+
+                        // Return focus to the element that opened the modal
+                        if (lastFocusedElement) {
+                            lastFocusedElement.focus();
+                        }
+                    }
+
+                    // Event listeners
+                    downloadButton.addEventListener('click', openModal);
+                    closeModalButton.addEventListener('click', closeModal);
+
+                    // Close modal when clicking outside
+                    downloadModal.addEventListener('click', function(event) {
+                        if (event.target === downloadModal) {
+                            closeModal();
+                        }
+                    });
+
+                    // Close modal with ESC key
+                    document.addEventListener('keydown', function(event) {
+                        if (event.key === 'Escape' && !downloadModal.classList.contains('hidden')) {
+                            closeModal();
+                        }
+                    });
+
+                    // Focus trap within modal
+                    downloadModal.addEventListener('keydown', function(event) {
+                        if (event.key === 'Tab' && !downloadModal.classList.contains('hidden')) {
+                            const focusableElements = downloadModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                            const firstElement = focusableElements[0];
+                            const lastElement = focusableElements[focusableElements.length - 1];
+
+                            if (event.shiftKey && document.activeElement === firstElement) {
+                                event.preventDefault();
+                                lastElement.focus();
+                            } else if (!event.shiftKey && document.activeElement === lastElement) {
+                                event.preventDefault();
+                                firstElement.focus();
+                            }
+                        }
+                    });
+
+                    // Typing animation with blinking cursor
+                    const cursorElement = document.querySelector('.cursor-animation');
+
+                    // Blink cursor
+                    setInterval(() => {
+                        cursorElement.style.opacity = cursorElement.style.opacity === '0' ? '1' : '0';
+                    }, 500);
+
+                    // Smooth scroll for "Learn More" button
+                    const learnMoreButton = document.getElementById('learn-more-button');
+                    learnMoreButton.addEventListener('click', function() {
+                        const featuresSection = document.getElementById('features');
+                        if (featuresSection) {
+                            featuresSection.scrollIntoView({ behavior: 'smooth' });
+                        }
+                    });
+                });
+            </script>
+        </div>
+
+    </element><element id="30745b96-3d4b-41c4-89f3-ff06dc7f162d" data-section-id="30745b96-3d4b-41c4-89f3-ff06dc7f162d">
+
+        <div id="root">
+            <section id="features" class="py-20 bg-neutral-100">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Features</h2>
+                        <p class="text-neutral-600 max-w-2xl mx-auto">Everything you need for distraction-free writing, nothing you don't.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Feature Card 1 -->
+                        <div class="bg-white rounded-xl p-6 shadow-sm border border-neutral-200 transform transition-transform hover:translate-y-[-5px]">
+                            <div class="bg-blue-500 text-white p-3 rounded-lg w-14 h-14 flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Clean Interface</h3>
+                            <p class="text-neutral-600">Minimalist design eliminates distractions and helps you focus solely on your writing.</p>
+                        </div>
+
+                        <!-- Feature Card 2 -->
+                        <div class="bg-white rounded-xl p-6 shadow-sm border border-neutral-200 transform transition-transform hover:translate-y-[-5px]">
+                            <div class="bg-green-500 text-white p-3 rounded-lg w-14 h-14 flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Auto-Saving</h3>
+                            <p class="text-neutral-600">Never lose your work with automatic saving that happens silently in the background.</p>
+                        </div>
+
+                        <!-- Feature Card 3 -->
+                        <div class="bg-white rounded-xl p-6 shadow-sm border border-neutral-200 transform transition-transform hover:translate-y-[-5px]">
+                            <div class="bg-purple-500 text-white p-3 rounded-lg w-14 h-14 flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Multiple Themes</h3>
+                            <p class="text-neutral-600">Choose from light, dark, sepia, blue, green, or create your own custom theme to match your mood.</p>
+                        </div>
+
+                        <!-- Feature Card 4 -->
+                        <div class="bg-white rounded-xl p-6 shadow-sm border border-neutral-200 transform transition-transform hover:translate-y-[-5px]">
+                            <div class="bg-yellow-500 text-white p-3 rounded-lg w-14 h-14 flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Word & Character Counts</h3>
+                            <p class="text-neutral-600">Keep track of your writing progress with real-time word and character counts.</p>
+                        </div>
+
+                        <!-- Feature Card 5 -->
+                        <div class="bg-white rounded-xl p-6 shadow-sm border border-neutral-200 transform transition-transform hover:translate-y-[-5px]">
+                            <div class="bg-red-500 text-white p-3 rounded-lg w-14 h-14 flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">File Management</h3>
+                            <p class="text-neutral-600">Organize your documents with a simple file system designed for writers.</p>
+                        </div>
+
+                        <!-- Feature Card 6 -->
+                        <div class="bg-white rounded-xl p-6 shadow-sm border border-neutral-200 transform transition-transform hover:translate-y-[-5px]">
+                            <div class="bg-indigo-500 text-white p-3 rounded-lg w-14 h-14 flex items-center justify-center mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Focus Mode</h3>
+                            <p class="text-neutral-600">Enter fullscreen mode for maximum concentration with minimal distractions.</p>
+                        </div>
+                    </div>
+
+                    <!-- Feature Showcase -->
+                    <div class="mt-20 bg-white rounded-xl p-6 shadow-sm border border-neutral-200 overflow-hidden">
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+                            <div>
+                                <h3 class="text-2xl font-bold mb-4">Experience the difference</h3>
+                                <p class="text-neutral-600 mb-6">Switch between multiple themes with a single click. Personalize your writing environment to match your mood or the time of day.</p>
+
+                                <div class="flex flex-wrap gap-3 mb-8">
+                                    <!-- Theme Buttons -->
+                                    <button id="light-theme" class="theme-button bg-white text-neutral-800 px-4 py-2 rounded-lg border border-neutral-200">Light</button>
+                                    <button id="dark-theme" class="theme-button bg-neutral-800 text-white px-4 py-2 rounded-lg border border-neutral-800">Dark</button>
+                                    <button id="sepia-theme" class="theme-button bg-amber-50 text-amber-900 px-4 py-2 rounded-lg border border-amber-100">Sepia</button>
+                                    <button id="blue-theme" class="theme-button bg-blue-50 text-blue-900 px-4 py-2 rounded-lg border border-blue-100">Blue</button>
+                                    <button id="green-theme" class="theme-button bg-green-50 text-green-900 px-4 py-2 rounded-lg border border-green-100">Green</button>
+                                </div>
+
+                                <ul class="space-y-3">
+                                    <li class="flex items-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mt-1 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-neutral-600">Customizable typography and line spacing</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mt-1 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-neutral-600">Reduced eye strain with specialized color modes</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500 mt-1 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        <span class="text-neutral-600">Perfect for day and night writing sessions</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div class="relative">
+                                <!-- Theme Preview Window -->
+                                <div id="theme-preview" class="bg-white rounded-xl p-4 border border-neutral-200 shadow-sm transform transition-all duration-300">
+                                    <!-- Window Controls -->
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex space-x-2">
+                                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                        </div>
+                                        <div class="text-xs text-neutral-400">Penspace</div>
+                                    </div>
+
+                                    <!-- Content Area -->
+                                    <div class="p-4 rounded-lg bg-white mb-3">
+                                        <p class="text-neutral-800 mb-2">The best writing happens when you're completely immersed in your thoughts.</p>
+                                        <p class="text-neutral-800 mb-2">No distractions. No interruptions.</p>
+                                        <p class="text-neutral-800">Just you and your words flowing freely.</p>
+                                    </div>
+
+                                    <!-- Status Bar -->
+                                    <div class="flex items-center justify-between text-xs text-neutral-400">
+                                        <div>Words: 23</div>
+                                        <div>Auto-saved 5s ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const themePreview = document.getElementById('theme-preview');
+                    const contentArea = themePreview.querySelector('.p-4');
+                    const statusBar = themePreview.querySelector('.flex.items-center.justify-between');
+                    const themeButtons = document.querySelectorAll('.theme-button');
+
+                    // Theme settings
+                    const themes = {
+                        'light-theme': {
+                            background: 'bg-white',
+                            textColor: 'text-neutral-800',
+                            contentBg: 'bg-white',
+                            statusColor: 'text-neutral-400',
+                            borderColor: 'border-neutral-200'
+                        },
+                        'dark-theme': {
+                            background: 'bg-neutral-800',
+                            textColor: 'text-neutral-200',
+                            contentBg: 'bg-neutral-900',
+                            statusColor: 'text-neutral-500',
+                            borderColor: 'border-neutral-700'
+                        },
+                        'sepia-theme': {
+                            background: 'bg-amber-50',
+                            textColor: 'text-amber-900',
+                            contentBg: 'bg-amber-50',
+                            statusColor: 'text-amber-700',
+                            borderColor: 'border-amber-100'
+                        },
+                        'blue-theme': {
+                            background: 'bg-blue-50',
+                            textColor: 'text-blue-900',
+                            contentBg: 'bg-blue-50',
+                            statusColor: 'text-blue-700',
+                            borderColor: 'border-blue-100'
+                        },
+                        'green-theme': {
+                            background: 'bg-green-50',
+                            textColor: 'text-green-900',
+                            contentBg: 'bg-green-50',
+                            statusColor: 'text-green-700',
+                            borderColor: 'border-green-100'
+                        }
+                    };
+
+                    // Apply theme function
+                    function applyTheme(themeId) {
+                        const theme = themes[themeId];
+
+                        // Remove all possible theme classes first
+                        themePreview.classList.remove(
+                            'bg-white', 'bg-neutral-800', 'bg-amber-50', 'bg-blue-50', 'bg-green-50',
+                            'border-neutral-200', 'border-neutral-700', 'border-amber-100', 'border-blue-100', 'border-green-100'
+                        );
+
+                        contentArea.classList.remove(
+                            'bg-white', 'bg-neutral-900', 'bg-amber-50', 'bg-blue-50', 'bg-green-50',
+                            'text-neutral-800', 'text-neutral-200', 'text-amber-900', 'text-blue-900', 'text-green-900'
+                        );
+
+                        statusBar.classList.remove(
+                            'text-neutral-400', 'text-neutral-500', 'text-amber-700', 'text-blue-700', 'text-green-700'
+                        );
+
+                        // Add new theme classes
+                        themePreview.classList.add(theme.background, theme.borderColor);
+                        contentArea.classList.add(theme.contentBg, theme.textColor);
+                        statusBar.classList.add(theme.statusColor);
+
+                        // Update text colors within content area
+                        const paragraphs = contentArea.querySelectorAll('p');
+                        paragraphs.forEach(p => {
+                            p.classList.remove('text-neutral-800', 'text-neutral-200', 'text-amber-900', 'text-blue-900', 'text-green-900');
+                            p.classList.add(theme.textColor);
+                        });
+                    }
+
+                    // Add click event to theme buttons
+                    themeButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const themeId = this.id;
+                            applyTheme(themeId);
+
+                            // Add active state to clicked button and remove from others
+                            themeButtons.forEach(btn => {
+                                btn.classList.remove('ring-2', 'ring-offset-2', 'ring-blue-500');
+                            });
+                            this.classList.add('ring-2', 'ring-offset-2', 'ring-blue-500');
+                        });
+                    });
+
+                    // Set default theme
+                    document.getElementById('light-theme').classList.add('ring-2', 'ring-offset-2', 'ring-blue-500');
+
+                    // Add hover animation to feature cards
+                    const featureCards = document.querySelectorAll('.bg-white.rounded-xl.p-6.shadow-sm');
+                    featureCards.forEach(card => {
+                        card.addEventListener('mouseenter', function() {
+                            this.classList.add('translate-y-[-5px]', 'shadow-md');
+                        });
+
+                        card.addEventListener('mouseleave', function() {
+                            this.classList.remove('translate-y-[-5px]', 'shadow-md');
+                        });
+                    });
+                });
+            </script>
+        </div>
+
+    </element><element id="c285af53-a3ac-4123-ab11-8e143d781f7f" data-section-id="c285af53-a3ac-4123-ab11-8e143d781f7f">
+
+        <div id="root">
+            <section id="download" class="py-20 bg-neutral-900 text-white">
+                <div class="container mx-auto px-6">
+                    <div class="text-center mb-16">
+                        <h2 class="text-3xl md:text-4xl font-bold mb-4">Download</h2>
+                        <p class="text-neutral-300 max-w-2xl mx-auto">Get Penspace on your platform of choice and start writing distraction-free today.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+                        <!-- Windows Download Card -->
+                        <div class="bg-neutral-800 rounded-xl p-6 border border-neutral-700 transition-all duration-300 hover:transform hover:translate-y-[-5px]">
+                            <div class="text-blue-400 mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-2">Windows</h3>
+                            <p class="text-neutral-400 text-center text-sm mb-4">Windows 10 and 11 (64-bit)</p>
+                            <button class="download-btn w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" data-platform="windows">
+                                Windows (Coming Soon)
+                            </button>
+                            <p class="text-xs text-neutral-500 text-center mt-3">Version 1.2.0 (Latest)</p>
+                        </div>
+
+                        <!-- macOS Download Card -->
+                        <div class="bg-neutral-800 rounded-xl p-6 border border-neutral-700 transition-all duration-300 hover:transform hover:translate-y-[-5px]">
+                            <div class="text-neutral-300 mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M22 17.607c-.786 2.28-3.139 6.317-5.563 6.361-1.608.031-2.125-.953-3.963-.953-1.837 0-2.412.923-3.932.983-2.572.099-6.542-5.827-6.542-10.995 0-4.747 3.308-7.1 6.198-7.143 1.55-.028 3.014 1.045 3.959 1.045.949 0 2.727-1.29 4.596-1.101.782.033 2.979.315 4.389 2.377-3.741 2.442-3.158 7.549.858 9.426zm-5.222-17.607c-2.826.114-5.132 3.079-4.81 5.531 2.612.203 5.118-2.725 4.81-5.531z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-2">macOS</h3>
+                            <p class="text-neutral-400 text-center text-sm mb-4">macOS 11 or later</p>
+                            <button class="download-btn w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" data-platform="macos">
+                              macOS (Coming Soon)
+                            </button>
+                            <p class="text-xs text-neutral-500 text-center mt-3">Version 1.2.0 (Latest)</p>
+                        </div>
+
+                        <!-- Linux Download Card -->
+                        <div class="bg-neutral-800 rounded-xl p-6 border border-neutral-700 transition-all duration-300 hover:transform hover:translate-y-[-5px]">
+                            <div class="text-yellow-400 mb-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M20.581 19.049c-.55-.446-.336-1.431-.907-1.917.553-3.365-.997-6.331-2.845-8.232-1.551-1.595-1.051-3.147-1.051-4.49 0-2.146-.881-4.41-3.55-4.41-2.853 0-3.635 2.38-3.663 3.738-.068 3.262.659 4.11-1.25 6.484-2.246 2.793-2.577 5.579-2.07 7.057-.237.276-.557.582-1.155.835-1.652.686-.441 2.857 1.261 2.483.506-.111 1.048-.408 1.393-.908.564.041 1.198-.027 1.908-.146.774.394 1.665.637 2.746.637 1.172 0 2.267-.303 3.082-.78 1.469.297 2.481.147 3.363.096.46.516 1.033.84 1.58.967 1.7.394 3.062-1.725 1.158-2.414zm-10.936-15.482c-.089-.013-.168-.043-.25-.043-1.562 0-1.53 1.923-1.35 3.629-.575.091-1.195.244-1.965.477.642-2.559 1.97-4.026 3.565-4.063zm.024 10.215c-1.698.346-3.272.941-4.55 1.631-.508-1.094-.438-2.223.127-3.284.691.097 1.444.154 2.231.154.656 0 1.298-.042 1.902-.117.159.764.452 1.156.29 1.616zm6.752-5.331c-.666-.36-1.375-.653-2.098-.854.021-.384.043-.715.069-.994.028.126.059.271.102.422.22.787.951 1.587.817 3.113-.042.479-.303.861-.666 1.109-.402-.623-1.345-1.111-2.301-1.111-1.928 0-3.475 1.984-3.475 4.137 0 .289.051.568.132.838-.445-.016-.876-.059-1.29-.123l-.088.158c-.553.99-1.691 1.895-2.642 1.986-.677.055-1.266-.389-1.337-1.059-.046-.438.071-.885.405-1.281.255-.305.608-.522 1.057-.653-.188.926.066 1.346.459 1.382.38.033.908-.598.908-1.135 0-2.074-1.593-3.764-1.593-5.709 0-1.445.424-2.703 1.207-3.501.841-.857 1.976-1.227 2.874-1.227.437 0 .793.058 1.045.139.389.094.702.213.93.361.169.104.369.249.504.41.142.159.27.356.364.593.126.317.184.646.19.979.023 1.431-.728 2.143-.929 2.353-.219.227-.574.413-.88.516-.492.17-.891.15-.891.15.061.025.15.051.23.093.256.142.997.472 1.841.284.741-.166 1.398-.798 1.623-1.544.066-.222.11-.458.121-.717.021-.472-.026-1.204-.122-1.838.358.206.733.41 1.051.671.662.549 1.249 1.335 1.623 2.261.374.923.538 2.029.38 3.125-.147 1.025-.549 1.916-1.122 2.651-1.55-1.407-1.235-2.961-3.172-2.961-.55 0-1.063.14-1.498.379.046-.285.086-.54.118-.771l.197-.016c1.434-.111 2.701-.512 3.636-1.073.829-.495 1.516-1.193 1.959-2.031.185.425.498.698.864.888.468.24 1.013.267 1.641.069.803-.25 1.548-.653 2.143-1.167.554-.477.893-1.018.931-1.592.013-.178-.021-.356-.118-.529.025-.15.046-.3.068-.451zm-7.302 7.568c.04-.092.09-.186.155-.266l-.003-.02c.014-.026.029-.055.044-.084.05-.086.109-.16.179-.221.418-.348 1.161-.312 1.707.139.113.094.207.203.287.32.094.145.152.311.152.485 0 .302-.155.589-.42.762-.267.177-.653.197-.989.05-.113-.051-.21-.127-.295-.215l-.011.008c-.344.264-.741.428-1.163.428-.191 0-.379-.033-.563-.098-.097.27-.314.469-.594.469-.336 0-.612-.291-.612-.642 0-.159.061-.312.155-.426-.172-.288-.288-.619-.288-.975 0-.549.243-1.045.638-1.399-.096-.195-.152-.404-.152-.618 0-.315.109-.599.284-.826-.01-.62.035-.122.09-.177h.002c.125-.125.301-.163.47-.108.172.057.286.177.302.338l.004.05c.058.315.274.579.549.699-.219.334-.344.714-.344 1.109 0 .52.198.99.526 1.351.048-.637.62-1.153 1.333-1.153.515 0 .941.258 1.141.659.222-.353.47-.693.742-1.013-.427-.172-.73-.557-.73-.996 0-.604.515-1.099 1.142-1.099.628 0 1.143.495 1.143 1.099 0 .501-.355.924-.827 1.044.248.32.469.661.642 1.014.204-.344.584-.54 1.017-.54.639 0 1.161.433 1.28.992.265-.184.431-.485.431-.815 0-.55-.447-.999-1.001-.999-.214 0-.413.065-.579.176-.2-.212-.476-.343-.781-.343-.374 0-.706.169-.931.429-.301-.227-.671-.361-1.073-.361-.306 0-.588.08-.839.214-.447-1.009-1.35-1.842-2.776-1.842-.643 0-1.248.149-1.744.403.026-.133.04-.267.04-.4 0-.373-.092-.72-.254-1.043.344-.182.67-.38.97-.593.277-.196.517-.4.725-.607.183-.178.338-.363.446-.545.108-.178.175-.352.175-.516 0-.246-.132-.484-.345-.632-.214-.15-.498-.195-.775-.128-.277.066-.55.217-.687.409-.069.092-.105.194-.106.295-.114-.001-.23-.017-.344-.049-.427-.125-.742-.462-.844-.846-.105-.42.051-.822.323-1.077.232-.219.557-.353.979-.451.424-.098.904-.132 1.342-.122.439.011.846.066 1.09.186.242.119.363.289.334.528-.291.187-.519.474-.664.805-.148.348-.221.741-.221 1.155 0 .244.028.488.087.731-.021.025-.038.052-.059.078-.239.322-.502.635-.827.911-.257.221-.547.422-.867.597-.313.17-.632.292-.977.353-.346.064-.717.063-1.099-.007zm2.196.48c.218.056.444.086.675.086.253 0 .495-.039.723-.108-.326.368-.822.608-1.398.608-.496 0-.954-.181-1.292-.476.259.05.541.077.836.077.161 0 .319-.01.456-.031zm5.07-.074c.051.131.136.252.249.345.113.096.258.165.418.195.159.031.329.026.494-.015.165-.041.319-.117.446-.221.126-.104.223-.237.282-.391.059-.153.079-.325.052-.505-.027-.179-.104-.35-.225-.493-.124-.146-.288-.258-.474-.328-.186-.069-.394-.092-.594-.056-.098.018-.19.045-.279.08.01-.08.04-.144.09-.194.195-.195.479-.228.84-.131.059-.085.09-.193.09-.303-.05-.1-.03-.209-.03-.209.073.005.132.05.197.125.065.076.116.183.116.301 0 .161-.085.312-.219.403.046.145.145.209.233.252.088.043.167.059.236.068.069.01.128.013.168.032.142.067.17.181.17.358-.043-.02-.079-.054-.129-.071-.049-.018-.11-.031-.18-.035-.69-.005-.146.001-.228.013-.082.013-.167.032-.251.065-.085.032-.168.077-.243.137-.075.06-.141.134-.19.226-.048.092-.08.199-.09.326-.011.125.001.266.056.417-.01.003-.022.004-.034.004-.05 0-.097-.022-.132-.067-.035-.044-.06-.106-.06-.179 0-.058.02-.117.056-.16.047-.057.118-.081.196-.081.086 0 .175.03.25.082.018-.095.03-.194.031-.296.002-.242-.089-.493-.28-.659-.193-.166-.471-.238-.741-.196-.261.081-.467.246-.481.481-.004.061.006.12.026.176.02.058.045.106.07.151-.16.012-.32.029-.48.051-.87.12-.171.301-.171.532 0 .306.124.592.325.829zm-4.202.284c.113.007.236-.013.349-.067.115-.055.222-.15.252-.295.031-.151.027-.271-.023-.376-.048-.106-.132-.194-.247-.257-.116-.064-.259-.102-.402-.102-.144 0-.289.035-.415.098l-.011.007c-.021-.081-.058-.155-.108-.22.221-.16.493-.255.791-.255.695 0 1.261.52 1.261 1.159 0 .292-.1.56-.271.773.031.068.059.139.084.21.024.07.033.143.033.215 0 .291-.221.539-.52.573v-.013c-.053.021-.107.033-.161.033-.073 0-.145-.019-.21-.054-.064-.035-.12-.085-.162-.147-.036-.052-.061-.109-.079-.17-.016-.062-.024-.127-.024-.194 0-.148.044-.291.128-.417-.219.103-.462.161-.728.161-.066 0-.132-.003-.197-.011zm1.502.365zm.09-.003c.001.019.01.035.025.048.015.014.036.023.058.025h.017c.019 0 .037-.006.053-.017.016-.012.027-.029.031-.05.006-.027.012-.052.021-.074.01-.022.022-.042.037-.058.015-.017.033-.03.054-.039s.042-.014.064-.014c.011 0 .023.001.033.004.011.003.021.006.031.012.01.005.021.011.032.018-.081-.009-.166.015-.206.09-.055.104.022.144.022.245 0 .07-.039.129-.095.167-.057.037-.133.057-.219.057-.067 0-.133-.015-.191-.043-.058-.028-.108-.068-.14-.119-.031-.052-.043-.112-.028-.173.016-.061.059-.113.122-.147.047-.025.099-.041.156-.047.032-.004.065-.005.098-.004.026.001.031.001.047.001l.023-.001c-.023.033-.028.066-.024.099z" />
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-center mb-2">Linux</h3>
+                            <p class="text-neutral-400 text-center text-sm mb-4">AppImage, Debian, RPM</p>
+                            <button class="download-btn w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50" data-platform="linux">
+                                Download for Linux
+                            </button>
+                            <p class="text-xs text-neutral-500 text-center mt-3">Version 1.2.0 (Latest)</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // FAQ accordions
+                    const faqToggles = document.querySelectorAll('.faq-toggle');
+
+                    faqToggles.forEach(toggle => {
+                        toggle.addEventListener('click', function() {
+                            const content = this.nextElementSibling;
+                            const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+                            // Toggle aria-expanded attribute
+                            this.setAttribute('aria-expanded', !isExpanded);
+
+                            // Toggle the content visibility
+                            if (isExpanded) {
+                                content.classList.add('hidden');
+                                this.querySelector('svg').classList.remove('rotate-180');
+                            } else {
+                                content.classList.remove('hidden');
+                                this.querySelector('svg').classList.add('rotate-180');
+                            }
+                        });
+                    });
+
+                    // Download modal functionality
+                    const downloadBtns = document.querySelectorAll('.download-btn');
+                    const downloadModal = document.getElementById('download-modal');
+                    const closeModalBtn = document.getElementById('close-modal');
+                    const cancelDownloadBtn = document.getElementById('cancel-download');
+                    const platformName = document.getElementById('platform-name');
+                    const downloadOptions = document.querySelectorAll('.download-options');
+
+                    let lastFocusedElement = null;
+
+                    // Show the modal
+                    function showModal(platform) {
+                        // Save the last focused element
+                        lastFocusedElement = document.activeElement;
+
+                        // Set the platform name
+                        platformName.textContent = platform.charAt(0).toUpperCase() + platform.slice(1);
+
+                        // Hide all download options
+                        downloadOptions.forEach(option => {
+                            option.classList.add('hidden');
+                        });
+
+                        // Show the specific platform options
+                        const platformOptions = document.getElementById(`${platform}-options`);
+                        if (platformOptions) {
+                            platformOptions.classList.remove('hidden');
+                        }
+
+                        // Show the modal
+                        downloadModal.classList.remove('hidden');
+                        document.body.style.overflow = 'hidden';
+
+                        // Set aria attributes
+                        downloadModal.setAttribute('aria-hidden', 'false');
+
+                        // Animate the modal
+                        setTimeout(() => {
+                            downloadModal.classList.add('opacity-100');
+                            downloadModal.querySelector('.bg-neutral-800').classList.add('scale-100');
+                            downloadModal.querySelector('.bg-neutral-800').classList.remove('scale-95');
+                        }, 10);
+
+                        // Focus the close button
+                        closeModalBtn.focus();
+                    }
+
+                    // Hide the modal
+                    function hideModal() {
+                        // Animate the modal out
+                        downloadModal.classList.remove('opacity-100');
+                        downloadModal.querySelector('.bg-neutral-800').classList.remove('scale-100');
+                        downloadModal.querySelector('.bg-neutral-800').classList.add('scale-95');
+
+                        // After animation, hide the modal
+                        setTimeout(() => {
+                            downloadModal.classList.add('hidden');
+                            document.body.style.overflow = '';
+
+                            // Set aria attributes
+                            downloadModal.setAttribute('aria-hidden', 'true');
+
+                            // Return focus to the last focused element
+                            if (lastFocusedElement) {
+                                lastFocusedElement.focus();
+                            }
+                        }, 300);
+                    }
+
+                    // Event listeners for opening the modal
+                    downloadBtns.forEach(btn => {
+                        btn.addEventListener('click', function() {
+                            const platform = this.getAttribute('data-platform');
+                            showModal(platform);
+                        });
+                    });
+
+                    // Event listeners for closing the modal
+                    closeModalBtn.addEventListener('click', hideModal);
+                    cancelDownloadBtn.addEventListener('click', hideModal);
+
+                    // Close the modal when clicking outside
+                    downloadModal.addEventListener('click', function(event) {
+                        if (event.target === downloadModal) {
+                            hideModal();
+                        }
+                    });
+
+                    // Close the modal when pressing ESC
+                    document.addEventListener('keydown', function(event) {
+                        if (event.key === 'Escape' && !downloadModal.classList.contains('hidden')) {
+                            hideModal();
+                        }
+                    });
+
+                    // Focus trap for the modal
+                    downloadModal.addEventListener('keydown', function(event) {
+                        if (event.key === 'Tab' && !downloadModal.classList.contains('hidden')) {
+                            const focusableElements = downloadModal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+                            const firstElement = focusableElements[0];
+                            const lastElement = focusableElements[focusableElements.length - 1];
+
+                            // If shift+tab on first element, focus the last element
+                            if (event.shiftKey && document.activeElement === firstElement) {
+                                event.preventDefault();
+                                lastElement.focus();
+                            }
+                            // If tab on last element, focus the first element
+                            else if (!event.shiftKey && document.activeElement === lastElement) {
+                                event.preventDefault();
+                                firstElement.focus();
+                            }
+                        }
+                    });
+                });
+            </script>
+        </div>
+
+    </element></div>
+</main>
+
+<!-- FAQ Accordion JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        try {
+            // Utility function to safely access properties of potentially undefined objects
+            function safeAccess(obj, prop) {
+                return obj && typeof obj === 'object' && prop in obj ? obj[prop] : undefined;
+            }
+
+            // Utility function to check if an element exists and is of a certain type
+            function isValidElement(el, type) {
+                try {
+                    return el && el.nodeType === 1 && (!type || el.nodeName.toLowerCase() === type.toLowerCase());
+                } catch (error) {
+                    console.error('Error checking element type:', error);
+                    return false;
+                }
+            }
+
+            // Initialize all FAQ accordions on the page
+            initializeFAQs();
+        } catch (error) {
+            console.error('Failed to initialize FAQs:', error);
+        }
+
+        // Helper function to initialize FAQs
+        function initializeFAQs() {
+            try {
+                // Look for FAQ sections with various possible class names/structures
+                const faqButtons = document.querySelectorAll('.faq-item button, .accordion-item button, .accordion-header button, [data-accordion-toggle], .accordion button');
+
+                if (faqButtons && faqButtons.length > 0) {
+                    faqButtons.forEach(button => {
+                        if (button) {
+                            try {
+                                setupAccordionButton(button);
+                            } catch (err) {
+                                console.error('Error setting up accordion button:', err);
+                            }
+                        }
+                    });
+                } else {
+                    // Look for elements that might be FAQs even if they don't have the expected structure
+                    const possibleFaqElements = document.querySelectorAll('.faq, .faqs, .accordion, .accordions, .faq-section, #faq, #faqs');
+
+                    if (possibleFaqElements && possibleFaqElements.length > 0) {
+                        possibleFaqElements.forEach(element => {
+                            if (!element) return;
+
+                            try {
+                                const questions = element.querySelectorAll('button, [role="button"], .accordion-item, .faq-item, h3');
+
+                                if (questions && questions.length > 0) {
+                                    questions.forEach(question => {
+                                        if (!question) return;
+
+                                        try {
+                                            if (!question.hasAttribute('aria-expanded')) {
+                                                // Turn this into a proper accordion button
+                                                question.setAttribute('aria-expanded', 'false');
+                                                const content = question.nextElementSibling;
+
+                                                if (content) {
+                                                    const id = 'accordion-content-' + Math.random().toString(36).substr(2, 9);
+                                                    content.id = id;
+                                                    question.setAttribute('aria-controls', id);
+                                                    content.classList.add('faq-content');
+
+                                                    // Add rotation icon if not present
+                                                    if (!question.querySelector('.faq-toggle-icon')) {
+                                                        // Find any SVG or icon element that might already be there
+                                                        const existingIcon = question.querySelector('svg, i, .icon, img[class*="icon"]');
+
+                                                        if (existingIcon) {
+                                                            existingIcon.classList.add('faq-toggle-icon');
+                                                        } else {
+                                                            // Create and append a plus icon if none exists
+                                                            const icon = document.createElement('span');
+                                                            icon.innerHTML = '+';
+                                                            icon.classList.add('faq-toggle-icon', 'ml-auto', 'text-xl', 'font-medium');
+
+                                                            // Find where to append the icon (usually at the end of the button)
+                                                            const container = question.querySelector('div');
+
+                                                            if (container) {
+                                                                container.style.display = 'flex';
+                                                                container.style.justifyContent = 'space-between';
+                                                                container.style.alignItems = 'center';
+                                                                container.appendChild(icon);
+                                                            } else if (question) {
+                                                                question.style.display = 'flex';
+                                                                question.style.justifyContent = 'space-between';
+                                                                question.style.alignItems = 'center';
+                                                                question.appendChild(icon);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    setupAccordionButton(question);
+                                                }
+                                            }
+                                        } catch (err) {
+                                            console.error('Error processing question element:', err);
+                                        }
+                                    });
+                                }
+                            } catch (err) {
+                                console.error('Error processing FAQ section:', err);
+                            }
+                        });
+                    }
+                }
+
+                // Additional fallback for specific FAQ structures found on the site
+                try {
+                    // Find the FAQ section by its heading
+                    const faqHeading = Array.from(document.querySelectorAll('h2, h3')).find(h =>
+                        h.textContent && h.textContent.toLowerCase().includes('frequently asked questions')
+                    );
+
+                    if (faqHeading) {
+                        const faqSection = faqHeading.closest('section') || faqHeading.parentElement;
+                        if (faqSection) {
+                            const questionElements = faqSection.querySelectorAll('h3:not(:first-child), .faq-question, .question, .accordion-title');
+
+                            questionElements.forEach(question => {
+                                try {
+                                    if (!question.hasAttribute('aria-expanded') && question.nextElementSibling) {
+                                        question.classList.add('faq-question');
+                                        question.setAttribute('role', 'button');
+                                        question.setAttribute('aria-expanded', 'false');
+
+                                        const content = question.nextElementSibling;
+                                        const id = 'faq-content-' + Math.random().toString(36).substr(2, 9);
+                                        content.id = id;
+                                        question.setAttribute('aria-controls', id);
+                                        content.classList.add('faq-content');
+
+                                        setupAccordionButton(question);
+                                    }
+                                } catch (error) {
+                                    console.error('Error processing FAQ question element:', error);
+                                }
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error in FAQ fallback processing:', error);
+                }
+            } catch (error) {
+                console.error('Error in initializeFAQs:', error);
+            }
+        }
+
+        function setupAccordionButton(button) {
+            if (!button) return;
+
+            try {
+                if (!button.hasAttribute('data-accordion-initialized')) {
+                    button.setAttribute('data-accordion-initialized', 'true');
+
+                    button.addEventListener('click', function(event) {
+                        try {
+                            // Prevent event bubbling if needed
+                            event.stopPropagation();
+
+                            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                            const contentId = button.getAttribute('aria-controls');
+                            const content = contentId && document.getElementById(contentId) ?
+                                document.getElementById(contentId) :
+                                button.nextElementSibling;
+
+                            if (content) {
+                                if (isExpanded) {
+                                    button.setAttribute('aria-expanded', 'false');
+                                    content.classList.remove('active');
+                                } else {
+                                    button.setAttribute('aria-expanded', 'true');
+                                    content.classList.add('active');
+                                }
+                            }
+                        } catch (err) {
+                            console.error('Error in accordion click handler:', err);
+                        }
+                    });
+                }
+            } catch (error) {
+                console.error('Error in setupAccordionButton:', error);
+            }
+        }
+    });
+</script>
+
+<!-- {bodyScripts} -->
+</body>
+</html>
