@@ -14,7 +14,7 @@ const currentFileIndicator = document.getElementById('current-file-indicator');
 const newBtn = document.getElementById('new-btn');
 const saveBtn = document.getElementById('save-btn');
 const openBtn = document.getElementById('open-btn');
-const filesBtn = document.getElementById('files-btn');
+const filesBtn = document.getElementById('files-top-btn');
 const fullscreenBtn = document.getElementById('fullscreen-btn');
 
 // Track current open file
@@ -89,6 +89,22 @@ editor.addEventListener('input', function() {
 function toggleSidebar() {
     console.log('Toggling sidebar');
     sidebar.classList.toggle('visible');
+    console.log('Sidebar visible:', sidebar.classList.contains('visible'));
+
+    // If opening the sidebar, request fresh file tree data
+    if (sidebar.classList.contains('visible')) {
+        console.log('Requesting updated file tree');
+        ipcRenderer.send('request-file-tree');
+    }
+}
+
+// Close sidebar when close button is clicked
+const closeSidebarBtn = document.getElementById('close-sidebar');
+if (closeSidebarBtn) {
+    closeSidebarBtn.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent event bubbling
+        toggleSidebar();
+    });
 }
 
 // Create new file function
@@ -110,14 +126,26 @@ function newFile() {
     editor.classList.remove('typing');
 }
 
-// Save file function
+// Save file function - opens a dialog over the editor
 function saveFile() {
     console.log('Saving file');
-    if (currentOpenFile) {
-        ipcRenderer.send('save-content', editor.value);
-    } else {
-        ipcRenderer.send('save-file-dialog');
+    // Always show save dialog
+    ipcRenderer.send('save-file-dialog');
+}
+
+// Toggle distraction-free mode
+let isDistractFreeMode = false;
+function toggleDistractionFree() {
+    isDistractFreeMode = !isDistractFreeMode;
+    console.log('Toggling distraction-free mode:', isDistractFreeMode);
+
+    // Update button text based on current state
+    if (fullscreenBtn) {
+        fullscreenBtn.textContent = isDistractFreeMode ? "Normal" : "Distraction Free";
     }
+
+    // Send to main process to toggle fullscreen
+    ipcRenderer.send('toggle-fullscreen');
 }
 
 // Add event listeners for buttons
@@ -142,8 +170,8 @@ if (filesBtn) filesBtn.addEventListener('click', function() {
 });
 
 if (fullscreenBtn) fullscreenBtn.addEventListener('click', function() {
-    console.log('Fullscreen button clicked');
-    ipcRenderer.send('toggle-fullscreen');
+    console.log('Distraction Free button clicked');
+    toggleDistractionFree();
 });
 
 // Handle key commands
@@ -207,18 +235,23 @@ ipcRenderer.on('file-saved', (event, savedPath) => {
 
 // Handle file tree updates
 ipcRenderer.on('update-file-tree', (event, fileStructure) => {
+    console.log('Received file tree update:', fileStructure);
     renderFileTree(fileStructure);
 });
 
 // Render the file tree from the provided structure
 function renderFileTree(items) {
+    console.log('Rendering file tree with items:', items);
     fileTree.innerHTML = '';
+
     if (!items || items.length === 0) {
         const emptyMessage = document.createElement('div');
-        emptyMessage.textContent = 'No files found';
+        emptyMessage.textContent = 'No files found in the Penspace folder on desktop';
         emptyMessage.style.padding = '10px';
         emptyMessage.style.color = '#aaa';
         fileTree.appendChild(emptyMessage);
+
+        console.log('No files found in the Penspace folder');
         return;
     }
 
@@ -242,7 +275,7 @@ function createFileTreeItem(item) {
     if (item.isDirectory) {
         const toggle = document.createElement('span');
         toggle.className = 'tree-toggle';
-        toggle.textContent = '▶';
+        toggle.textContent = '▶ ';
         itemElement.appendChild(toggle);
 
         // Folder name
@@ -268,7 +301,7 @@ function createFileTreeItem(item) {
             if (e.target === toggle || e.target === nameSpan) {
                 e.stopPropagation();
                 const isOpen = childrenContainer.style.display !== 'none';
-                toggle.textContent = isOpen ? '▶' : '▼';
+                toggle.textContent = isOpen ? '▶ ' : '▼ ';
                 childrenContainer.style.display = isOpen ? 'none' : 'block';
             }
         });
@@ -308,7 +341,7 @@ function updateActiveFileInTree(activePath) {
                 parent.style.display = 'block';
                 const toggle = parent.previousSibling.querySelector('.tree-toggle');
                 if (toggle) {
-                    toggle.textContent = '▼';
+                    toggle.textContent = '▼ ';
                 }
                 parent = parent.parentElement.parentElement;
             }
@@ -337,8 +370,11 @@ if (editor) {
     console.log('Placeholder set to:', placeholders[currentPlaceholder]);
 }
 
-// Initialize counts
+// Initialize counts and file list
 updateCounts();
+
+// Force initial file tree loading
+ipcRenderer.send('request-file-tree');
 
 // Put focus on editor when the app loads
 window.addEventListener('load', () => {

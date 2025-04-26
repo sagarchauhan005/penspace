@@ -2,22 +2,19 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Freewrite</title>
+    <title>Quill</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div id="app-container">
-    <!-- File sidebar (always visible) -->
-    <div id="sidebar">
-        <div id="sidebar-header">
-            <h3>Your Files</h3>
-        </div>
-        <div id="file-tree"></div>
-    </div>
-
     <!-- Main editor area -->
     <div id="content-area">
         <textarea id="editor" placeholder="Start typing..."></textarea>
+
+        <!-- Files button in top-right corner -->
+        <button id="files-top-btn" title="Show Files">Files</button>
+
+        <!-- Stats display -->
         <div id="stats-display">
             <span id="word-count">0 words</span> · <span id="char-count">0 characters</span>
         </div>
@@ -30,12 +27,33 @@
         <!-- Footer menu -->
         <div id="footer-menu">
             <button id="new-btn" class="menu-button">New</button>
-            <button id="open-btn" class="menu-button">Open</button>
             <button id="save-btn" class="menu-button">Save</button>
-            <button id="fullscreen-btn" class="menu-button">Fullscreen</button>
+            <button id="fullscreen-btn" class="menu-button">Distraction Free</button>
+        </div>
+    </div>
+
+    <!-- File sidebar (initially hidden, shows on right) -->
+    <div id="sidebar">
+        <div id="sidebar-header">
+            <h3>Your Files</h3>
+            <button id="close-sidebar" title="Close">×</button>
+        </div>
+        <div id="file-tree"></div>
+    </div>
+</div>
+
+<!-- Save dialog overlay -->
+<div id="save-dialog-overlay">
+    <div id="save-dialog">
+        <h3>Save File</h3>
+        <input type="text" id="save-filename" placeholder="Filename" value="untitled.txt">
+        <div id="save-dialog-buttons">
+            <button id="save-dialog-cancel">Cancel</button>
+            <button id="save-dialog-save">Save</button>
         </div>
     </div>
 </div>
+
 <script src="renderer.js"></script>
 </body>
 </html>
