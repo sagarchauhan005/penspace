@@ -344,6 +344,127 @@ ipcMain.on('toggle-fullscreen', () => {
     }
 });
 
+// Handle save with filename from custom dialog
+ipcMain.on('save-file-with-name', (event, filename, content) => {
+    console.log('Saving file with name:', filename);
+
+    // Make sure filename has proper extension
+    let filePath = filename;
+    if (!filename.includes('.')) {
+        filePath = filename + '.txt';
+    }
+
+    // Create full path in the Quill folder
+    const fullPath = path.join(freewriteFolder, filePath);
+
+    try {
+        fs.writeFileSync(fullPath, content);
+        currentFile = fullPath;
+
+        // Update file tree and notify renderer
+        const fileStructure = getFilesInFolder();
+        mainWindow.webContents.send('update-file-tree', fileStructure);
+        mainWindow.webContents.send('file-saved', fullPath);
+
+        console.log('File saved successfully:', fullPath);
+    } catch (err) {
+        console.error('Error saving file:', err);
+        mainWindow.webContents.send('save-error', err.message);
+    }
+});
+
+// Handle auto-save
+ipcMain.on('auto-save-content', (event, filename, content) => {
+    console.log('Auto-saving content to file:', filename);
+
+    try {
+        // Make sure the full path is in the Quill folder
+        const fullPath = path.join(freewriteFolder, filename);
+
+        // Ensure the folder exists
+        ensureFolderExists();
+
+        // Save the content
+        fs.writeFileSync(fullPath, content);
+        currentFile = fullPath;
+
+        // Update file tree and notify renderer
+        const fileStructure = getFilesInFolder();
+        mainWindow.webContents.send('update-file-tree', fileStructure);
+        mainWindow.webContents.send('auto-save-complete', fullPath);
+
+        console.log('Auto-save successful:', fullPath);
+    } catch (err) {
+        console.error('Error during auto-save:', err);
+        mainWindow.webContents.send('auto-save-error', err.message);
+    }
+});
+
+// Handle file rename
+ipcMain.on('rename-file', (event, oldFilePath, newFilename) => {
+    console.log('Renaming file from', oldFilePath, 'to', newFilename);
+
+    try {
+        // Ensure the new name has an extension if the old one did
+        let newName = newFilename;
+        const oldExt = path.extname(oldFilePath);
+        if (oldExt && !newName.includes('.')) {
+            newName += oldExt;
+        }
+
+        // Get directory of old file and create new path
+        const dir = path.dirname(oldFilePath);
+        const newFilePath = path.join(dir, newName);
+
+        // Rename the file
+        fs.renameSync(oldFilePath, newFilePath);
+
+        // Update current file reference
+        currentFile = newFilePath;
+
+        // Update file tree and notify renderer
+        const fileStructure = getFilesInFolder();
+        mainWindow.webContents.send('update-file-tree', fileStructure);
+        mainWindow.webContents.send('file-renamed', newFilePath);
+
+        console.log('File renamed successfully to:', newFilePath);
+    } catch (err) {
+        console.error('Error renaming file:', err);
+        mainWindow.webContents.send('rename-error', err.message);
+    }
+});
+
+// Handle item deletion (file or folder)
+ipcMain.on('delete-item', (event, itemPath, isDirectory) => {
+    console.log(`Deleting ${isDirectory ? 'directory' : 'file'}:`, itemPath);
+
+    try {
+        if (isDirectory) {
+            // Delete directory recursively
+            fs.rmdirSync(itemPath, { recursive: true });
+        } else {
+            // Delete file
+            fs.unlinkSync(itemPath);
+
+            // If the deleted file was the current file, clear the reference
+            if (currentFile === itemPath) {
+                currentFile = null;
+                mainWindow.webContents.send('file-deleted');
+            }
+        }
+
+        // Update file tree
+        const fileStructure = getFilesInFolder();
+        mainWindow.webContents.send('update-file-tree', fileStructure);
+
+        console.log('Item deleted successfully');
+    } catch (err) {
+        console.error('Error deleting item:', err);
+        mainWindow.webContents.send('delete-error', err.message);
+    }
+});
+
+// Handle file tree requests
 ipcMain.on('request-file-tree', () => {
     console.log('Received request for file tree');
     // Force creating the folder if it doesn't exist

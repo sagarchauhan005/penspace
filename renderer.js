@@ -10,15 +10,16 @@ const fileTree = document.getElementById('file-tree');
 const filePath = document.getElementById('file-path');
 const currentFileIndicator = document.getElementById('current-file-indicator');
 
-// Get buttons
+// Get buttons - FIXED: Use files-top-btn instead of files-btn
 const newBtn = document.getElementById('new-btn');
 const saveBtn = document.getElementById('save-btn');
 const openBtn = document.getElementById('open-btn');
-const filesBtn = document.getElementById('files-top-btn');
+const filesTopBtn = document.getElementById('files-top-btn'); // FIXED: Correct ID
 const fullscreenBtn = document.getElementById('fullscreen-btn');
 
-// Track current open file
+// Track current open file and autosave file
 let currentOpenFile = null;
+let autoSaveFilename = '';
 
 // Auto-save timer
 let autoSaveTimer;
@@ -49,6 +50,33 @@ function cyclePlaceholders() {
 // Start cycling placeholders
 const placeholderInterval = setInterval(cyclePlaceholders, 3000);
 
+// Auto-save content function
+function autoSaveContent() {
+    console.log('Auto-saving content...');
+
+    // If no file is open yet, create a new one with timestamp
+    if (!currentOpenFile) {
+        const now = new Date();
+        const timestamp = now.toISOString().replace(/[:.]/g, '-');
+        autoSaveFilename = `untitled-${timestamp}.txt`;
+
+        console.log('Creating new auto-save file:', autoSaveFilename);
+
+        // Show the filename in the top-left
+        filePath.textContent = autoSaveFilename;
+        filePath.classList.add('editable');
+
+        // Make the indicator visible
+        currentFileIndicator.classList.add('visible');
+        setTimeout(() => {
+            currentFileIndicator.classList.remove('visible');
+        }, 2000);
+    }
+
+    // Send content to be saved
+    ipcRenderer.send('auto-save-content', currentOpenFile || autoSaveFilename, editor.value);
+}
+
 // Update word and character counts
 function updateCounts() {
     const text = editor.value;
@@ -61,8 +89,13 @@ function updateCounts() {
     // Reset auto-save timer
     clearTimeout(autoSaveTimer);
     autoSaveTimer = setTimeout(() => {
-        if (currentOpenFile) {
-            ipcRenderer.send('save-content', editor.value);
+        // FIXED: Call autosave if there's content but no current file
+        if (text.trim().length > 0) {
+            if (currentOpenFile) {
+                ipcRenderer.send('save-content', editor.value);
+            } else {
+                autoSaveContent();
+            }
         }
     }, AUTO_SAVE_DELAY);
 }
@@ -75,13 +108,23 @@ function showCurrentFileIndicator() {
     }, 2000);
 }
 
-// Handle the typing state to move text to top left
+// Handle the typing state to move text to top left and trigger autosave
 editor.addEventListener('input', function() {
+    // Check if this is the first input and no file is open
+    const isFirstInput = !editor.classList.contains('typing') && editor.value.trim().length > 0;
+
     if (editor.value.trim().length > 0) {
         editor.classList.add('typing');
+
+        // If this is the first input and no file exists yet, create one immediately
+        if (isFirstInput && !currentOpenFile) {
+            console.log('First input detected, creating auto-save file');
+            autoSaveContent();
+        }
     } else {
         editor.classList.remove('typing');
     }
+
     updateCounts();
 });
 
@@ -120,18 +163,58 @@ function newFile() {
 
     editor.value = '';
     currentOpenFile = null;
+    autoSaveFilename = '';
     filePath.textContent = 'Untitled';
     updateCounts();
     editor.focus();
     editor.classList.remove('typing');
 }
 
+// Handle save dialog
+const saveDialogOverlay = document.getElementById('save-dialog-overlay');
+const saveFilenameInput = document.getElementById('save-filename');
+const saveDialogCancelBtn = document.getElementById('save-dialog-cancel');
+const saveDialogSaveBtn = document.getElementById('save-dialog-save');
+
 // Save file function - opens a dialog over the editor
 function saveFile() {
     console.log('Saving file');
-    // Always show save dialog
-    ipcRenderer.send('save-file-dialog');
+    // Show custom save dialog
+    saveDialogOverlay.classList.add('visible');
+    saveFilenameInput.focus();
+
+    // Pre-fill with current filename if exists
+    if (currentOpenFile) {
+        saveFilenameInput.value = path.basename(currentOpenFile);
+    } else if (autoSaveFilename) {
+        saveFilenameInput.value = autoSaveFilename;
+    }
 }
+
+// Handle save dialog buttons
+if (saveDialogCancelBtn) {
+    saveDialogCancelBtn.addEventListener('click', function() {
+        saveDialogOverlay.classList.remove('visible');
+    });
+}
+
+if (saveDialogSaveBtn) {
+    saveDialogSaveBtn.addEventListener('click', function() {
+        const filename = saveFilenameInput.value.trim();
+        if (filename) {
+            // Send filename to main process to save
+            ipcRenderer.send('save-file-with-name', filename, editor.value);
+            saveDialogOverlay.classList.remove('visible');
+        }
+    });
+}
+
+// Close dialog on Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && saveDialogOverlay.classList.contains('visible')) {
+        saveDialogOverlay.classList.remove('visible');
+    }
+});
 
 // Toggle distraction-free mode
 let isDistractFreeMode = false;
@@ -149,30 +232,43 @@ function toggleDistractionFree() {
 }
 
 // Add event listeners for buttons
-if (newBtn) newBtn.addEventListener('click', function() {
-    console.log('New button clicked');
-    newFile();
-});
+if (newBtn) {
+    newBtn.addEventListener('click', function() {
+        console.log('New button clicked');
+        newFile();
+    });
+}
 
-if (saveBtn) saveBtn.addEventListener('click', function() {
-    console.log('Save button clicked');
-    saveFile();
-});
+if (saveBtn) {
+    saveBtn.addEventListener('click', function() {
+        console.log('Save button clicked');
+        saveFile();
+    });
+}
 
-if (openBtn) openBtn.addEventListener('click', function() {
-    console.log('Open button clicked');
-    ipcRenderer.send('open-file-dialog');
-});
+if (openBtn) {
+    openBtn.addEventListener('click', function() {
+        console.log('Open button clicked');
+        ipcRenderer.send('open-file-dialog');
+    });
+}
 
-if (filesBtn) filesBtn.addEventListener('click', function() {
-    console.log('Files button clicked');
-    toggleSidebar();
-});
+// FIXED: Use filesTopBtn instead of filesBtn
+if (filesTopBtn) {
+    filesTopBtn.addEventListener('click', function() {
+        console.log('Files top button clicked');
+        toggleSidebar();
+    });
+} else {
+    console.error('Files top button not found in the DOM!');
+}
 
-if (fullscreenBtn) fullscreenBtn.addEventListener('click', function() {
-    console.log('Distraction Free button clicked');
-    toggleDistractionFree();
-});
+if (fullscreenBtn) {
+    fullscreenBtn.addEventListener('click', function() {
+        console.log('Distraction Free button clicked');
+        toggleDistractionFree();
+    });
+}
 
 // Handle key commands
 document.addEventListener('keydown', (e) => {
@@ -210,6 +306,7 @@ ipcRenderer.on('file-opened', (event, content, fullPath) => {
     editor.value = content;
     currentOpenFile = fullPath;
     filePath.textContent = fullPath ? path.basename(fullPath) : 'Untitled';
+    filePath.classList.add('editable');
     updateCounts();
     editor.focus();
     editor.classList.add('typing');
@@ -230,13 +327,56 @@ ipcRenderer.on('save-requested', () => {
 ipcRenderer.on('file-saved', (event, savedPath) => {
     currentOpenFile = savedPath;
     filePath.textContent = path.basename(savedPath);
+    filePath.classList.add('editable');
     showCurrentFileIndicator();
+});
+
+// Listen for auto-save completion
+ipcRenderer.on('auto-save-complete', (event, filePath) => {
+    console.log('Auto-save complete:', filePath);
+    currentOpenFile = filePath;
+
+    // Update the filename in UI if it's not already set
+    if (this.filePath) {
+        this.filePath.textContent = path.basename(filePath);
+        this.filePath.classList.add('editable');
+    }
+});
+
+ipcRenderer.on('auto-save-error', (event, errorMessage) => {
+    console.error('Auto-save error:', errorMessage);
+    alert(`Error saving file: ${errorMessage}`);
 });
 
 // Handle file tree updates
 ipcRenderer.on('update-file-tree', (event, fileStructure) => {
     console.log('Received file tree update:', fileStructure);
     renderFileTree(fileStructure);
+});
+
+// Listen for file events
+ipcRenderer.on('file-renamed', (event, newPath) => {
+    currentOpenFile = newPath;
+    filePath.textContent = path.basename(newPath);
+});
+
+ipcRenderer.on('file-deleted', () => {
+    // Current file was deleted
+    currentOpenFile = null;
+    filePath.textContent = 'Untitled';
+
+    // Create a new autosave file if there's content
+    if (editor.value.trim().length > 0) {
+        autoSaveContent();
+    }
+});
+
+ipcRenderer.on('rename-error', (event, errorMessage) => {
+    alert(`Error renaming file: ${errorMessage}`);
+});
+
+ipcRenderer.on('delete-error', (event, errorMessage) => {
+    alert(`Error deleting item: ${errorMessage}`);
 });
 
 // Render the file tree from the provided structure
@@ -246,12 +386,12 @@ function renderFileTree(items) {
 
     if (!items || items.length === 0) {
         const emptyMessage = document.createElement('div');
-        emptyMessage.textContent = 'No files found in the Penspace folder on desktop';
+        emptyMessage.textContent = 'No files found in the folder';
         emptyMessage.style.padding = '10px';
         emptyMessage.style.color = '#aaa';
         fileTree.appendChild(emptyMessage);
 
-        console.log('No files found in the Penspace folder');
+        console.log('No files found in the folder');
         return;
     }
 
@@ -271,17 +411,38 @@ function createFileTreeItem(item) {
     const itemElement = document.createElement('div');
     itemElement.className = item.isDirectory ? 'tree-item tree-folder' : 'tree-item tree-file';
 
+    // Create delete button
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-item';
+    deleteBtn.innerHTML = '×';
+    deleteBtn.title = 'Delete';
+    deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent opening the file/folder
+
+        // Ask for confirmation
+        const itemType = item.isDirectory ? 'folder' : 'file';
+        const confirmMessage = `Are you sure you want to delete this ${itemType}?\n${item.name}`;
+
+        if (confirm(confirmMessage)) {
+            console.log(`Deleting ${itemType}:`, item.path);
+            ipcRenderer.send('delete-item', item.path, item.isDirectory);
+        }
+    });
+
     // Add toggle for directories
     if (item.isDirectory) {
         const toggle = document.createElement('span');
         toggle.className = 'tree-toggle';
-        toggle.textContent = '▶ ';
+        toggle.textContent = '▶';
         itemElement.appendChild(toggle);
 
         // Folder name
         const nameSpan = document.createElement('span');
         nameSpan.textContent = item.name;
         itemElement.appendChild(nameSpan);
+
+        // Add delete button
+        itemElement.appendChild(deleteBtn);
 
         // Container for subfolder/files
         const childrenContainer = document.createElement('div');
@@ -301,7 +462,7 @@ function createFileTreeItem(item) {
             if (e.target === toggle || e.target === nameSpan) {
                 e.stopPropagation();
                 const isOpen = childrenContainer.style.display !== 'none';
-                toggle.textContent = isOpen ? '▶ ' : '▼ ';
+                toggle.textContent = isOpen ? '▶' : '▼';
                 childrenContainer.style.display = isOpen ? 'none' : 'block';
             }
         });
@@ -312,6 +473,9 @@ function createFileTreeItem(item) {
         // File item
         itemElement.setAttribute('data-path', item.path);
         itemElement.textContent = item.name;
+
+        // Add delete button
+        itemElement.appendChild(deleteBtn);
 
         // Open file on click
         itemElement.addEventListener('click', () => {
@@ -341,7 +505,7 @@ function updateActiveFileInTree(activePath) {
                 parent.style.display = 'block';
                 const toggle = parent.previousSibling.querySelector('.tree-toggle');
                 if (toggle) {
-                    toggle.textContent = '▼ ';
+                    toggle.textContent = '▼';
                 }
                 parent = parent.parentElement.parentElement;
             }
@@ -349,15 +513,59 @@ function updateActiveFileInTree(activePath) {
     }
 }
 
+// Make the filename editable
+filePath.addEventListener('click', function() {
+    if (filePath.classList.contains('editable')) {
+        // Make the filename editable
+        const currentName = filePath.textContent;
+        filePath.contentEditable = true;
+        filePath.classList.add('editing');
+        filePath.focus();
+
+        // Select the filename part before the extension
+        const dotIndex = currentName.lastIndexOf('.');
+        if (dotIndex > 0) {
+            const range = document.createRange();
+            const sel = window.getSelection();
+            range.setStart(filePath.firstChild, 0);
+            range.setEnd(filePath.firstChild, dotIndex);
+            sel.removeAllRanges();
+            sel.addRange(range);
+        }
+    }
+});
+
+// Handle editing completion
+filePath.addEventListener('blur', function() {
+    if (filePath.contentEditable === 'true') {
+        finishFileNameEditing();
+    }
+});
+
+filePath.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        finishFileNameEditing();
+    }
+});
+
+// Finish editing the filename
+function finishFileNameEditing() {
+    filePath.contentEditable = false;
+    filePath.classList.remove('editing');
+
+    const newName = filePath.textContent.trim();
+    if (newName && currentOpenFile && newName !== path.basename(currentOpenFile)) {
+        // Send a request to rename the file
+        ipcRenderer.send('rename-file', currentOpenFile, newName);
+    }
+}
+
 // Debug initial state
 console.log('Initial setup complete');
 console.log('Editor element:', editor);
 console.log('Sidebar element:', sidebar);
-console.log('New button:', newBtn);
-console.log('Save button:', saveBtn);
-console.log('Open button:', openBtn);
-console.log('Files button:', filesBtn);
-console.log('Fullscreen button:', fullscreenBtn);
+console.log('Files top button:', filesTopBtn);
 
 // Initialize the sidebar as hidden
 if (sidebar && !sidebar.classList.contains('visible')) {

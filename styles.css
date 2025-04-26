@@ -1,90 +1,4 @@
-/* Save dialog overlay */
-#save-dialog-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.3);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-#save-dialog-overlay.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-#save-dialog {
-    background-color: white;
-    border-radius: 8px;
-    padding: 20px;
-    width: 400px;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-}
-
-#save-dialog h3 {
-    margin-top: 0;
-    font-weight: 300;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-#save-dialog input {
-    width: 100%;
-    padding: 8px 10px;
-    border: 1px solid #eee;
-    border-radius: 4px;
-    font-size: 14px;
-    margin-bottom: 20px;
-}
-
-#save-dialog-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-#save-dialog-buttons button {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-#save-dialog-cancel {
-    background-color: #f5f5f5;
-    color: #666;
-}
-
-#save-dialog-save {
-    background-color: #f0f0f0;
-    color: #333;
-}/* Files button in top-right corner */
-#files-top-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: none;
-    border: none;
-    color: #aaa;
-    font-size: 14px;
-    font-weight: 300;
-    cursor: pointer;
-    padding: 5px 10px;
-    z-index: 5;
-    transition: color 0.2s;
-}
-
-#files-top-btn:hover {
-    color: #555;
-}/* Base styles */
+/* Base styles */
 * {
     margin: 0;
     padding: 0;
@@ -161,6 +75,28 @@ body {
     opacity: 0;
 }
 
+/* Files button in top-right corner */
+#files-top-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: 1px solid #eee; /* Added border for visibility */
+    border-radius: 4px;
+    color: #aaa;
+    font-size: 14px;
+    font-weight: 300;
+    cursor: pointer;
+    padding: 5px 10px;
+    z-index: 100; /* Increased z-index to ensure it's on top */
+    transition: color 0.2s, background-color 0.2s;
+}
+
+#files-top-btn:hover {
+    color: #555;
+    background-color: #f5f5f5;
+}
+
 /* Footer menu - positioned at bottom left */
 #footer-menu {
     position: absolute;
@@ -197,19 +133,37 @@ body {
 /* Current file indicator */
 #current-file-indicator {
     position: absolute;
-    top: 40px;
-    left: 40px;
+    top: 15px;
+    left: 20px;
     color: #999;
     font-size: 14px;
     font-weight: 300;
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 100;
-    pointer-events: none;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 5px 10px;
+    border-radius: 4px;
 }
 
 #current-file-indicator.visible {
     opacity: 1;
+}
+
+#file-path {
+    display: inline-block;
+    padding: 2px 4px;
+}
+
+#file-path.editable {
+    border-bottom: 1px dashed #ccc;
+    cursor: pointer;
+}
+
+#file-path.editing {
+    border: 1px solid #ddd;
+    background: white;
+    outline: none;
 }
 
 /* Sidebar styles - togglable on right side */
@@ -227,6 +181,7 @@ body {
     transform: translateX(100%);
     transition: transform 0.3s ease;
     z-index: 10;
+    box-shadow: -2px 0 15px rgba(0, 0, 0, 0.05);
 }
 
 #sidebar.visible {
@@ -277,6 +232,7 @@ body {
     text-overflow: ellipsis;
     font-size: 14px;
     color: #aaa;
+    position: relative;
 }
 
 .tree-item:hover {
@@ -310,6 +266,30 @@ body {
     color: #ddd;
 }
 
+/* Delete button for files and folders */
+.delete-item {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    color: #ccc;
+    background: none;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 2px 6px;
+}
+
+.delete-item:hover {
+    color: #ff6b6b;
+}
+
+.tree-item:hover .delete-item {
+    opacity: 1;
+}
+
 /* Stats display */
 #stats-display {
     position: absolute;
@@ -327,6 +307,76 @@ body {
 
 #editor.typing + #stats-display {
     opacity: 1;
+}
+
+/* Save dialog overlay */
+#save-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+#save-dialog-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#save-dialog {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+#save-dialog h3 {
+    margin-top: 0;
+    font-weight: 300;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+#save-dialog input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+#save-dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+#save-dialog-buttons button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#save-dialog-cancel {
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+#save-dialog-save {
+    background-color: #f0f0f0;
+    color: #333;
 }
 
 /* Media query for smaller screens */
