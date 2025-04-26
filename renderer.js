@@ -578,3 +578,148 @@ ipcRenderer.send('request-file-tree');
 window.addEventListener('load', () => {
     editor.focus();
 });
+
+// Theme handling
+const themeOptions = document.querySelectorAll('.theme-option');
+const customColorPicker = document.getElementById('custom-color-picker');
+let currentTheme = 'light';
+
+// Set active theme indicator
+function updateActiveTheme(themeName) {
+    themeOptions.forEach(option => {
+        if (option.dataset.theme === themeName) {
+            option.classList.add('active');
+        } else {
+            option.classList.remove('active');
+        }
+    });
+}
+
+// Apply theme to document
+function applyTheme(themeName, customColor = null) {
+    // Remove all theme classes
+    document.body.classList.remove('theme-light', 'theme-dark', 'theme-sepia', 'theme-blue', 'theme-green', 'theme-custom');
+
+    if (themeName === 'custom' && customColor) {
+        // Apply custom theme with the selected color
+        document.documentElement.style.setProperty('--bg-color', adjustBrightness(customColor, 0.95));
+        document.documentElement.style.setProperty('--text-color', getContrastColor(customColor));
+        document.documentElement.style.setProperty('--placeholder-color', adjustBrightness(customColor, 0.7));
+        document.documentElement.style.setProperty('--ui-color', adjustBrightness(customColor, 0.5));
+        document.documentElement.style.setProperty('--ui-hover-color', adjustBrightness(customColor, 0.3));
+        document.documentElement.style.setProperty('--border-color', adjustBrightness(customColor, 0.85));
+        document.documentElement.style.setProperty('--sidebar-bg', adjustBrightness(customColor, 0.95));
+        document.documentElement.style.setProperty('--sidebar-border', adjustBrightness(customColor, 0.85));
+        document.documentElement.style.setProperty('--ui-bg-hover', adjustBrightness(customColor, 0.9));
+        document.documentElement.style.setProperty('--file-indicator-bg', `${adjustBrightness(customColor, 0.95, 0.8)}`);
+        document.documentElement.style.setProperty('--tree-item-active', adjustBrightness(customColor, 0.85));
+
+        document.body.classList.add('theme-custom');
+    } else {
+        // Apply predefined theme
+        document.body.classList.add(`theme-${themeName}`);
+        // Reset any custom CSS variables
+        document.documentElement.style.removeProperty('--bg-color');
+        document.documentElement.style.removeProperty('--text-color');
+        document.documentElement.style.removeProperty('--placeholder-color');
+        document.documentElement.style.removeProperty('--ui-color');
+        document.documentElement.style.removeProperty('--ui-hover-color');
+        document.documentElement.style.removeProperty('--border-color');
+        document.documentElement.style.removeProperty('--sidebar-bg');
+        document.documentElement.style.removeProperty('--sidebar-border');
+        document.documentElement.style.removeProperty('--ui-bg-hover');
+        document.documentElement.style.removeProperty('--file-indicator-bg');
+        document.documentElement.style.removeProperty('--tree-item-active');
+    }
+
+    // Update active theme indicator
+    updateActiveTheme(themeName);
+    currentTheme = themeName;
+
+    // Save user preference
+    localStorage.setItem('penspace-theme', themeName);
+    if (customColor) {
+        localStorage.setItem('penspace-custom-color', customColor);
+    }
+}
+
+// Helper function to adjust color brightness
+function adjustBrightness(hex, factor, alpha = 1) {
+    // Convert hex to RGB
+    let r = parseInt(hex.slice(1, 3), 16);
+    let g = parseInt(hex.slice(3, 5), 16);
+    let b = parseInt(hex.slice(5, 7), 16);
+
+    // Adjust brightness
+    r = Math.min(255, Math.max(0, Math.round(r * factor)));
+    g = Math.min(255, Math.max(0, Math.round(g * factor)));
+    b = Math.min(255, Math.max(0, Math.round(b * factor)));
+
+    // Convert back to hex
+    const hexResult = '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+
+    if (alpha < 1) {
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    return hexResult;
+}
+
+// Function to determine if a color is light or dark
+function getContrastColor(hex) {
+    // Convert hex to RGB
+    let r = parseInt(hex.slice(1, 3), 16);
+    let g = parseInt(hex.slice(3, 5), 16);
+    let b = parseInt(hex.slice(5, 7), 16);
+
+    // Calculate perceived brightness using the formula: (0.299*R + 0.587*G + 0.114*B)
+    const brightness = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+    // If the color is light, return dark text; otherwise, return light text
+    return brightness > 0.7 ? '#333333' : '#ffffff';
+}
+
+// Set up event listeners for theme options
+themeOptions.forEach(option => {
+    option.addEventListener('click', function() {
+        const themeName = this.dataset.theme;
+
+        if (themeName === 'custom') {
+            // Show color picker when custom theme is clicked
+            customColorPicker.click();
+        } else {
+            applyTheme(themeName);
+        }
+    });
+});
+
+// Handle custom color picker changes
+customColorPicker.addEventListener('input', function() {
+    const customColor = this.value;
+    applyTheme('custom', customColor);
+
+    // Update the custom theme button style
+    const customButton = document.querySelector('.theme-option[data-theme="custom"]');
+    customButton.style.background = customColor;
+
+    // Adjust text color based on brightness
+    customButton.style.color = getContrastColor(customColor);
+});
+
+// Load saved theme on startup
+window.addEventListener('load', function() {
+    const savedTheme = localStorage.getItem('penspace-theme') || 'light';
+    const savedCustomColor = localStorage.getItem('penspace-custom-color');
+
+    if (savedTheme === 'custom' && savedCustomColor) {
+        applyTheme('custom', savedCustomColor);
+        customColorPicker.value = savedCustomColor;
+
+        // Update the custom theme button style
+        const customButton = document.querySelector('.theme-option[data-theme="custom"]');
+        customButton.style.background = savedCustomColor;
+        customButton.style.color = getContrastColor(savedCustomColor);
+    } else {
+        applyTheme(savedTheme);
+    }
+});

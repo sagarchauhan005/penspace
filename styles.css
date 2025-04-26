@@ -1,3 +1,89 @@
+/* Theme variables */
+:root {
+    /* Light theme (default) */
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --placeholder-color: #bbbbbb;
+    --ui-color: #999999;
+    --ui-hover-color: #555555;
+    --border-color: #eeeeee;
+    --sidebar-bg: #ffffff;
+    --sidebar-border: #eeeeee;
+    --menu-bg: transparent;
+    --ui-bg-hover: #f5f5f5;
+    --file-indicator-bg: rgba(255, 255, 255, 0.8);
+    --tree-item-active: #f5f5f5;
+    --delete-hover: #ff6b6b;
+}
+
+/* Dark theme */
+body.theme-dark {
+    --bg-color: #222222;
+    --text-color: #e0e0e0;
+    --placeholder-color: #666666;
+    --ui-color: #a0a0a0;
+    --ui-hover-color: #c0c0c0;
+    --border-color: #444444;
+    --sidebar-bg: #333333;
+    --sidebar-border: #444444;
+    --menu-bg: transparent;
+    --ui-bg-hover: #444444;
+    --file-indicator-bg: rgba(34, 34, 34, 0.8);
+    --tree-item-active: #444444;
+    --delete-hover: #ff6b6b;
+}
+
+/* Sepia theme */
+body.theme-sepia {
+    --bg-color: #f4ecd8;
+    --text-color: #5b4636;
+    --placeholder-color: #c0b6a3;
+    --ui-color: #96826e;
+    --ui-hover-color: #5b4636;
+    --border-color: #e0d6c2;
+    --sidebar-bg: #f4ecd8;
+    --sidebar-border: #e0d6c2;
+    --menu-bg: transparent;
+    --ui-bg-hover: #e0d6c2;
+    --file-indicator-bg: rgba(244, 236, 216, 0.8);
+    --tree-item-active: #e0d6c2;
+    --delete-hover: #ff6b6b;
+}
+
+/* Blue theme */
+body.theme-blue {
+    --bg-color: #f0f8ff;
+    --text-color: #2c3e50;
+    --placeholder-color: #a9cce3;
+    --ui-color: #7fb3d5;
+    --ui-hover-color: #2c3e50;
+    --border-color: #d4e6f1;
+    --sidebar-bg: #f0f8ff;
+    --sidebar-border: #d4e6f1;
+    --menu-bg: transparent;
+    --ui-bg-hover: #d4e6f1;
+    --file-indicator-bg: rgba(240, 248, 255, 0.8);
+    --tree-item-active: #d4e6f1;
+    --delete-hover: #ff6b6b;
+}
+
+/* Green theme */
+body.theme-green {
+    --bg-color: #f1f8e9;
+    --text-color: #33691e;
+    --placeholder-color: #aed581;
+    --ui-color: #8bc34a;
+    --ui-hover-color: #33691e;
+    --border-color: #dcedc8;
+    --sidebar-bg: #f1f8e9;
+    --sidebar-border: #dcedc8;
+    --menu-bg: transparent;
+    --ui-bg-hover: #dcedc8;
+    --file-indicator-bg: rgba(241, 248, 233, 0.8);
+    --tree-item-active: #dcedc8;
+    --delete-hover: #ff6b6b;
+}
+
 /* Base styles */
 * {
     margin: 0;
@@ -10,9 +96,10 @@ body {
     padding: 0;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     overflow: hidden;
-    background-color: #fff;
+    background-color: var(--bg-color);
     height: 100vh;
-    color: #333;
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
 }
 
 /* Full-screen app container */
@@ -23,12 +110,12 @@ body {
     display: flex;
 }
 
-/* Main content area - full screen white */
+/* Main content area - full screen */
 #content-area {
     flex: 1;
     display: flex;
     position: relative;
-    background-color: #fff;
+    background-color: var(--bg-color);
     overflow: hidden;
 }
 
@@ -42,10 +129,10 @@ body {
     font-family: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Segoe UI', Arial, sans-serif;
     font-size: 20px;
     line-height: 1.6;
-    color: #333;
-    background-color: #fff;
+    color: var(--text-color);
+    background-color: var(--bg-color);
     padding: 40px;
-    transition: padding 0.3s ease;
+    transition: padding 0.3s ease, color 0.3s, background-color 0.3s;
     letter-spacing: -0.022em;
     font-weight: 300;
 }
@@ -55,7 +142,7 @@ body {
 }
 
 #editor::placeholder {
-    color: #bbb;
+    color: var(--placeholder-color);
     opacity: 1;
     text-align: center;
     position: absolute;
@@ -81,23 +168,23 @@ body {
     top: 15px;
     right: 15px;
     background: none;
-    border: 1px solid #eee; /* Added border for visibility */
+    border: 1px solid var(--border-color);
     border-radius: 4px;
-    color: #aaa;
+    color: var(--ui-color);
     font-size: 14px;
     font-weight: 300;
     cursor: pointer;
     padding: 5px 10px;
-    z-index: 100; /* Increased z-index to ensure it's on top */
-    transition: color 0.2s, background-color 0.2s;
+    z-index: 100;
+    transition: color 0.2s, background-color 0.2s, border-color 0.3s;
 }
 
 #files-top-btn:hover {
-    color: #555;
-    background-color: #f5f5f5;
+    color: var(--ui-hover-color);
+    background-color: var(--ui-bg-hover);
 }
 
-/* Footer menu - positioned at bottom left */
+/* Footer menu - positioned at bottom left - VISIBLE ONLY ON HOVER */
 #footer-menu {
     position: absolute;
     bottom: 20px;
@@ -105,20 +192,20 @@ body {
     display: flex;
     gap: 20px;
     padding: 10px 0;
-    opacity: 0.7;
+    opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 10;
-    background-color: transparent;
+    background-color: var(--menu-bg);
 }
 
 #content-area:hover #footer-menu {
-    opacity: 1;
+    opacity: 0.7;
 }
 
 .menu-button {
     background: none;
     border: none;
-    color: #999;
+    color: var(--ui-color);
     font-size: 14px;
     font-weight: 300;
     cursor: pointer;
@@ -127,7 +214,7 @@ body {
 }
 
 .menu-button:hover {
-    color: #555;
+    color: var(--ui-hover-color);
 }
 
 /* Current file indicator */
@@ -135,18 +222,18 @@ body {
     position: absolute;
     top: 15px;
     left: 20px;
-    color: #999;
+    color: var(--ui-color);
     font-size: 14px;
     font-weight: 300;
     z-index: 100;
-    background: rgba(255, 255, 255, 0.8);
+    background: var(--file-indicator-bg);
     padding: 5px 10px;
     border-radius: 4px;
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, color 0.3s;
 }
 
 #current-file-indicator:hover {
-    background-color: #f5f5f5;
+    background-color: var(--ui-bg-hover);
 }
 
 #file-path {
@@ -155,13 +242,13 @@ body {
 }
 
 #file-path.editable {
-    border-bottom: 1px dashed #ccc;
+    border-bottom: 1px dashed var(--border-color);
     cursor: pointer;
 }
 
 #file-path.editing {
-    border: 1px solid #ddd;
-    background: white;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
     outline: none;
     padding: 2px 4px;
     min-width: 100px;
@@ -170,8 +257,8 @@ body {
 /* Sidebar styles - togglable on right side */
 #sidebar {
     width: 280px;
-    background-color: #fff;
-    border-left: 1px solid #eee;
+    background-color: var(--sidebar-bg);
+    border-left: 1px solid var(--sidebar-border);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -180,7 +267,7 @@ body {
     top: 0;
     bottom: 0;
     transform: translateX(100%);
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, background-color 0.3s, border-color 0.3s;
     z-index: 10;
     box-shadow: -2px 0 15px rgba(0, 0, 0, 0.05);
 }
@@ -191,7 +278,7 @@ body {
 
 #sidebar-header {
     padding: 20px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--sidebar-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -199,7 +286,7 @@ body {
 
 #sidebar-header h3 {
     margin: 0;
-    color: #999;
+    color: var(--ui-color);
     font-weight: 300;
     font-size: 16px;
 }
@@ -207,14 +294,14 @@ body {
 #close-sidebar {
     background: none;
     border: none;
-    color: #999;
+    color: var(--ui-color);
     font-size: 20px;
     cursor: pointer;
     transition: color 0.2s;
 }
 
 #close-sidebar:hover {
-    color: #555;
+    color: var(--ui-hover-color);
 }
 
 #file-tree {
@@ -232,28 +319,28 @@ body {
     overflow: hidden;
     text-overflow: ellipsis;
     font-size: 14px;
-    color: #aaa;
+    color: var(--ui-color);
     position: relative;
 }
 
 .tree-item:hover {
-    background-color: #f9f9f9;
-    color: #777;
+    background-color: var(--ui-bg-hover);
+    color: var(--ui-hover-color);
 }
 
 .tree-item.active {
-    background-color: #f5f5f5;
-    color: #555;
+    background-color: var(--tree-item-active);
+    color: var(--ui-hover-color);
 }
 
 .tree-folder {
     font-weight: 500;
-    color: #888;
+    color: var(--ui-color);
 }
 
 .tree-file {
     font-weight: 300;
-    color: #aaa;
+    color: var(--ui-color);
 }
 
 .tree-folder-contents {
@@ -264,7 +351,7 @@ body {
     display: inline-block;
     width: 14px;
     text-align: center;
-    color: #ddd;
+    color: var(--border-color);
 }
 
 /* Delete button for files and folders */
@@ -275,7 +362,7 @@ body {
     transform: translateY(-50%);
     opacity: 0;
     transition: opacity 0.2s;
-    color: #ccc;
+    color: var(--border-color);
     background: none;
     border: none;
     font-size: 14px;
@@ -284,7 +371,7 @@ body {
 }
 
 .delete-item:hover {
-    color: #ff6b6b;
+    color: var(--delete-hover);
 }
 
 .tree-item:hover .delete-item {
@@ -298,11 +385,11 @@ body {
     left: 0;
     width: 100%;
     text-align: center;
-    color: #999;
+    color: var(--ui-color);
     font-size: 14px;
     font-weight: 300;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, color 0.3s;
     pointer-events: none;
 }
 
@@ -333,27 +420,32 @@ body {
 }
 
 #save-dialog {
-    background-color: white;
+    background-color: var(--bg-color);
     border-radius: 8px;
     padding: 20px;
     width: 400px;
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s;
 }
 
 #save-dialog h3 {
     margin-top: 0;
     font-weight: 300;
-    color: #333;
+    color: var(--text-color);
     margin-bottom: 20px;
+    transition: color 0.3s;
 }
 
 #save-dialog input {
     width: 100%;
     padding: 8px 10px;
-    border: 1px solid #eee;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 14px;
     margin-bottom: 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: border-color 0.3s, background-color 0.3s, color 0.3s;
 }
 
 #save-dialog-buttons {
@@ -368,16 +460,105 @@ body {
     border-radius: 4px;
     font-size: 14px;
     cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
 }
 
 #save-dialog-cancel {
-    background-color: #f5f5f5;
-    color: #666;
+    background-color: var(--ui-bg-hover);
+    color: var(--ui-color);
+}
+
+#save-dialog-cancel:hover {
+    background-color: var(--border-color);
+    color: var(--ui-hover-color);
 }
 
 #save-dialog-save {
-    background-color: #f0f0f0;
-    color: #333;
+    background-color: var(--ui-bg-hover);
+    color: var(--ui-hover-color);
+}
+
+#save-dialog-save:hover {
+    background-color: var(--border-color);
+}
+
+/* Theme selector */
+#theme-selector {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#content-area:hover #theme-selector {
+    opacity: 1;
+}
+
+.theme-option {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    transition: transform 0.2s;
+    position: relative;
+}
+
+.theme-option:hover {
+    transform: scale(1.1);
+}
+
+.theme-option.active {
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Theme specific colors */
+.theme-option[data-theme="light"] {
+    background-color: #ffffff;
+    border-color: #cccccc;
+}
+
+.theme-option[data-theme="dark"] {
+    background-color: #222222;
+}
+
+.theme-option[data-theme="sepia"] {
+    background-color: #f4ecd8;
+    border-color: #cccccc;
+}
+
+.theme-option[data-theme="blue"] {
+    background-color: #f0f8ff;
+    border-color: #cccccc;
+}
+
+.theme-option[data-theme="green"] {
+    background-color: #f1f8e9;
+    border-color: #cccccc;
+}
+
+.theme-option[data-theme="custom"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #666;
+    background: linear-gradient(45deg, #ff8a00, #e52e71, #2facfe, #19e3b1);
+}
+
+#custom-color-picker {
+    opacity: 0;
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    top: -3px;
+    left: -3px;
+    cursor: pointer;
 }
 
 /* Media query for smaller screens */
@@ -407,5 +588,16 @@ body {
     #current-file-indicator {
         top: 30px;
         left: 30px;
+    }
+
+    #theme-selector {
+        bottom: 10px;
+        right: 10px;
+        gap: 8px;
+    }
+
+    .theme-option {
+        width: 20px;
+        height: 20px;
     }
 }

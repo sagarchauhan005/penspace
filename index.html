@@ -2,10 +2,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Quill</title>
+    <title>Penspace</title>
     <link rel="stylesheet" href="styles.css">
 </head>
-<body>
+<body class="theme-light">
 <div id="app-container">
     <!-- Main editor area -->
     <div id="content-area">
@@ -28,7 +28,18 @@
         <div id="footer-menu">
             <button id="new-btn" class="menu-button">New</button>
             <button id="save-btn" class="menu-button">Save</button>
-            <button id="fullscreen-btn" class="menu-button">Focus Mode</button>
+            <button id="fullscreen-btn" class="menu-button">Distraction Free</button>
+        </div>
+
+        <!-- Theme selector -->
+        <div id="theme-selector">
+            <div class="theme-option" data-theme="light" title="Light Theme"></div>
+            <div class="theme-option" data-theme="dark" title="Dark Theme"></div>
+            <div class="theme-option" data-theme="sepia" title="Sepia Theme"></div>
+            <div class="theme-option" data-theme="blue" title="Blue Theme"></div>
+            <div class="theme-option" data-theme="green" title="Green Theme"></div>
+            <div class="theme-option custom-theme" data-theme="custom" title="Custom Theme">+</div>
+            <input type="color" id="custom-color-picker" style="display: none;">
         </div>
     </div>
 
