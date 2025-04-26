@@ -1,70 +1,148 @@
-I'll help create a comprehensive README.md file for this Electron-based text editor application. Based on the code context, it appears to be a desktop text editor with file management capabilities.
+**_`# Penspace
 
-```markdown
-# Desktop Text Editor
+A simple, distraction-free writing application for focused writing sessions.
 
-A lightweight, modern text editor built with Electron and JavaScript.
+## See it in action
+![Penspace Screenshot](assets/screenshots/penspace.gif)
+
+![Penspace Screenshot](assets/screenshots/white.png)
+![Penspace Screenshot](assets/screenshots/black.png)
+![Penspace Screenshot](assets/screenshots/pink.png)
+![Penspace Screenshot](assets/screenshots/yellow.png)
 
 ## Features
 
-- Clean and intuitive user interface
-- File management (create, open, save)
-- File tree sidebar navigation
-- Keyboard shortcuts support
-- Full-screen mode
-- Real-time character and word count
-- Auto-save functionality
-- File change indicators
+- **Clean, Distraction-Free Interface**: Focus on your writing without clutter
+- **Auto-Saving**: Never lose your work with automatic saving
+- **Multiple Themes**: Choose from light, dark, sepia, blue, green, or create your own custom theme
+- **Word & Character Counts**: Keep track of your writing progress
+- **File Management**: Organize your documents with a simple file system
+- **Text Formatting**: Basic formatting options appear when you select text
+- **Focus Mode**: Enter fullscreen mode for maximum concentration
+- **Keyboard Shortcuts**: Quickly perform common actions`_**
 
-## Keyboard Shortcuts
+## Installation
 
-- `Ctrl/Cmd + N`: New file
-- `Ctrl/Cmd + S`: Save file
-- `Ctrl/Cmd + O`: Open file
-- `Esc`: Toggle sidebar
+### Ubuntu and other Debian-based Linux distributions
 
-## Development
+#### Option 1: Download the .deb package
+
+1. Download the latest .deb file from dist folder of this repo.
+2. Install the package with:
+   ```bash
+   sudo dpkg -i penspace_1.0.0_amd64.deb
+   ```
+3. If you encounter dependency errors, run:
+   ```bash
+   sudo apt-get install -f
+   ```
+
+#### Option 2: Install via Snap (Coming Soon)
+
+```bash
+sudo snap install penspace
+```
+
+### Windows & Mac (Coming Soon)
+
+## Usage
+
+### Basic Controls
+
+- **New Document**: Ctrl+N or click the "+" button
+- **Save Document**: Ctrl+S or click the save icon
+- **Open File Browser**: Click "Files" in the top-right corner
+- **Focus Mode**: Click the focus icon in the bottom toolbar
+- **Exit Application**: Click the X button or press Alt+F4/Cmd+Q
+
+### Text Formatting
+
+Select text to reveal the formatting toolbar, which allows you to:
+- Bold, italic, and underline text
+- Create ordered (numbered) and unordered (bullet) lists
+- Add headings
+- Remove formatting
+
+### Themes
+
+Click any color circle in the bottom-right corner to change themes. The "+" option allows you to select a custom color for your theme.
+
+## Building from Source
 
 ### Prerequisites
 
-- Node.js
+- Node.js (v16 or newer)
 - npm
 
-### Installation
+### Steps
 
-1. Clone the repository
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/username/penspace.git
+   cd penspace
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the application in development mode:
+   ```bash
+   npm start
+   ```
+
+4. Build packages for your platform:
+   ```bash
+   # For Linux
+   npm run build-linux
+   
+   # For Windows
+   npm run build-win
+   
+   # For macOS
+   npm run build-mac
+   
+   # For all platforms
+   npm run build-all
+   ```
+
+Built packages will be available in the `dist` directory.
+
+## Troubleshooting
+
+### Application doesn't appear in menu after installation
+
+Create or fix the desktop entry file:
+
 ```bash
-git clone <repository-url>
-cd <project-directory>
+sudo nano /usr/share/applications/penspace-minimal.desktop
 ```
 
-2. Install dependencies
-```bash
-npm install
+Add the following content:
+
+```
+[Desktop Entry]
+Name=Penspace Minimal
+Comment=A simple, distraction-free writing app
+Exec=/opt/Penspace\ -\ Minimal/penspace-minimal
+Icon=/opt/Penspace\ -\ Minimal/resources/app/assets/icons/linux/icon.png
+Terminal=false
+Type=Application
+Categories=Utility;TextEditor;
+StartupWMClass=penspace-minimal
 ```
 
-3. Start the application
-```bash
-npm start
-```
-
-### Building
-
-To create a distribution build:
+Then update the desktop database:
 
 ```bash
-npm run build
+sudo update-desktop-database
 ```
+
+### Windows: Missing ffmpeg.dll error
+
+If you encounter an error about missing ffmpeg.dll, reinstall the application using the latest installer from the releases page, which includes all required dependencies.
 
 ## License
 
-[MIT License](LICENSE)
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-```
+This project is licensed under the MIT License - see the LICENSE file for details.

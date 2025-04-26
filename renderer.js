@@ -16,6 +16,17 @@ const saveBtn = document.getElementById('save-btn');
 const openBtn = document.getElementById('open-btn');
 const filesTopBtn = document.getElementById('files-top-btn'); // FIXED: Correct ID
 const fullscreenBtn = document.getElementById('fullscreen-btn');
+const exitbtn = document.getElementById('exit-btn');
+
+// Exit button functionality
+// not working
+if (exitbtn) {
+    exitbtn.addEventListener('click', function() {
+        console.log('Exit button clicked');
+        ipcRenderer.send('close-app');
+    });
+}
+
 
 // Track current open file and autosave file
 let currentOpenFile = null;
@@ -781,3 +792,37 @@ function toggleDistractionFree() {
     // Send to main process to toggle fullscreen
     ipcRenderer.send('toggle-fullscreen');
 }
+
+const toolbar = document.getElementById('toolbar');
+
+function format(command, value = null) {
+    document.execCommand(command, false, value);
+}
+
+// Position and show toolbar on text selection
+function handleSelection() {
+    const selection = window.getSelection();
+    const selectedText = selection.toString();
+
+    if (selectedText.length > 0 && editor.contains(selection.anchorNode)) {
+        const range = selection.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+
+        toolbar.style.display = 'flex';
+        toolbar.style.top = `${rect.top - 60 + window.scrollY}px`; // 60px above selection
+        toolbar.style.left = `${rect.left + rect.width/2 - toolbar.offsetWidth/2}px`;
+    } else {
+        toolbar.style.display = 'none';
+    }
+}
+
+// Hide toolbar when clicking outside
+document.addEventListener('click', (e) => {
+    if (!editor.contains(e.target) && !toolbar.contains(e.target)) {
+        toolbar.style.display = 'none';
+    }
+});
+
+// Attach selection listeners
+editor.addEventListener('mouseup', handleSelection);
+editor.addEventListener('keyup', handleSelection);

@@ -1,33 +1,49 @@
 {
-  "name": "penscpace-minimal",
+  "name": "penspace",
   "version": "1.0.0",
   "description": "A simple, distraction-free writing app",
   "main": "main.js",
+  "icon": "assets/icon",
   "scripts": {
     "start": "electron .",
     "build-linux": "electron-builder --linux",
     "build-mac": "electron-builder --mac",
     "build-win": "electron-builder --win"
   },
-  "author": "Sagar Chauhan",
+  "author": "Sagar Chauhan <coolsagar005@gmail.com>",
   "license": "MIT",
   "devDependencies": {
     "electron": "^25.0.0",
     "electron-builder": "^24.6.3"
   },
   "dependencies": {
-    "chokidar": "^3.6.0"
+    "chokidar": "^3.6.0",
+    "ffmpeg-static": "^5.2.0"
   },
   "build": {
-    "appId": "com.freewrite.linux",
-    "productName": "Freewrite",
+    "appId": "com.penspace.minimal",
+    "productName": "Penspace",
     "linux": {
       "target": [
-        "AppImage",
         "deb",
-        "rpm"
+        "snap"
       ],
+      "icon": "assets/icons/linux",
       "category": "Utility"
+    },
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "assets/icons/win/icon.ico"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "icon": "assets/icons/mac",
+      "category": "public.app-category.productivity"
     }
   }
 }

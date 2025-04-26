@@ -88,12 +88,16 @@ function createWindow() {
         minHeight: 600,
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false
+            contextIsolation: false,
+            // Add this line to disable media features
+            enableWebSQL: false
         },
+        // Other settings remain the same
         backgroundColor: '#ffffff',
-        icon: path.join(__dirname, 'assets/icon.png'),
+        icon: path.join(__dirname, 'assets', 'icon'),
         frame: false,
-        fullscreen: true
+        fullscreen: true,
+        show: false
     });
 
     mainWindow.loadFile('index.html');
@@ -342,6 +346,11 @@ ipcMain.on('toggle-fullscreen', () => {
         console.log('Toggling fullscreen mode, current state:', isFullscreen);
         mainWindow.setFullScreen(!isFullscreen);
     }
+});
+
+ipcMain.on('close-app', () => {
+    console.log('Received app-exit event');
+    app.quit();
 });
 
 // Handle save with filename from custom dialog
